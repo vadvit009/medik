@@ -9,7 +9,7 @@ const {
   deleteProduct,
 } = require("../controllers/products.controller");
 
-const { verifyAdminToken } = require("../middleware/JWTauth");
+const { verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/products", getAllProducts);
 

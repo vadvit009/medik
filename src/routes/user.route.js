@@ -12,7 +12,7 @@ const {
   restorePassword,
 } = require("../controllers/user.controller");
 
-const { verifyUserToken, verifyAdminToken } = require("../middleware/JWTauth");
+const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/users", verifyAdminToken, getAllUsers);
 
