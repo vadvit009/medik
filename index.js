@@ -16,6 +16,11 @@ app.use(
     resave: true,
     saveUninitialized: true,
     secret: "MedTechnika",
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    },
   })
 );
 app.use(cookieParser());

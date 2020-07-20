@@ -5,6 +5,8 @@ const getAllProducts = async (req, res) => {
   const { search, page } = req.query;
   console.log("SEARCH === " + search + " PAGE === " + page);
 
+  const length = await Product.countDocuments().then((length) => length);
+
   return await Product.aggregate([
     {
       $lookup: {
@@ -15,6 +17,7 @@ const getAllProducts = async (req, res) => {
       },
     },
   ])
+    // .skip(page ? 0 : page * 25)
     .limit(page ? page * 25 : 25)
     .then((products) => {
       search
@@ -26,7 +29,7 @@ const getAllProducts = async (req, res) => {
                 : null
             )
           )
-        : res.json(products);
+        : res.send({ products, length });
     })
     .catch((err) => res.send({ err: true, errorMsg: err }));
 };
@@ -156,27 +159,27 @@ const restoreProduct = async (req, res) => {
 };
 
 const softDeleteProduct = async (req, res) => {
-    const { id } = req.params;
-    return await Product.update(
-      { deletedAt: "now()" },
-      { where: { productId: id } }
-    )
-      .then((product) => {
-        const bearerToken = req.headers.authorization;
-        if (bearerToken) {
-          const token = bearerToken.split(" ")[1];
-          jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-            console.log("err = ", err);
-            if (err) return res.sendStatus(403);
-            // next();
-            res.json(product);
-          });
-        } else {
-          res.sendStatus(401);
-        }
-      })
-      .catch((err) => console.log(err));
-    // res.json({ isAdmin: false });
+  const { id } = req.params;
+  return await Product.update(
+    { deletedAt: "now()" },
+    { where: { productId: id } }
+  )
+    .then((product) => {
+      const bearerToken = req.headers.authorization;
+      if (bearerToken) {
+        const token = bearerToken.split(" ")[1];
+        jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
+          console.log("err = ", err);
+          if (err) return res.sendStatus(403);
+          // next();
+          res.json(product);
+        });
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => console.log(err));
+  // res.json({ isAdmin: false });
 };
 
 const deleteProduct = async (req, res) => {
