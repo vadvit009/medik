@@ -17,8 +17,8 @@ const getAllProducts = async (req, res) => {
       },
     },
   ])
-    // .skip(page ? 0 : page * 25)
-    .limit(page ? page * 25 : 25)
+    .skip(page > 1 ? (page - 1) * 24 : 0)
+    .limit(page ? page * 24 : 24)
     .then((products) => {
       search
         ? res.send(
@@ -36,21 +36,19 @@ const getAllProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   const { id } = req.params;
-  return Product.aggregate([
-    {
-      $lookup: {
-        from: "category",
-        localField: "categoryID",
-        foreignField: "_id",
-        as: "categories",
-      },
-    },
-    {
-      $match: { _id: ObjectId(id) },
-    },
-  ])
-    .then((product) => res.json(product))
-    .catch((err) => res.send({ err: true, errorMsg: err }));
+
+  return await Product.findById(ObjectId(id))
+    .populate("categoryID", "parentID subParentID title desc -_id")
+    .populate("vendorID", "title -_id")
+    .populate({
+      path: "reviews",
+      select: "title desc userID -_id",
+      populate: { path: "userID", select: "fName -_id" },
+    })
+    .exec((err, prod) => {
+      if (err) return res.send(err);
+      res.send(prod);
+    });
 };
 
 const createProduct = async (req, res) => {

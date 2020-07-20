@@ -63,7 +63,7 @@ module.exports = {
   },
 
   register: async (req, res) => {
-    const { fName, lName, phone, email, password, role, gallery } = req.body;
+    const { fName, lName, phone, email, password, role } = req.body;
     const key = crypto.createHash("md5").update(password).digest("hex");
     return await User.findOne({ email: email }).then((user) => {
       if (!user) {
@@ -72,7 +72,6 @@ module.exports = {
           lName,
           phone,
           email,
-          gallery,
           password: key,
           role,
         })

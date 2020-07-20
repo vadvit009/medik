@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const Product = new mongoose.Schema({
+const Product = new Schema({
   title: String,
   desc: String,
   price: Number,
   salePrice: Number,
   attr: Array,
   attrOptions: Array,
-  categoryID: mongoose.ObjectId,
-  vendorID: mongoose.ObjectId,
+  categoryID: [{ type: mongoose.ObjectId, ref: "Category" }],
+  vendorID: [{ type: mongoose.ObjectId, ref: "Vendor" }],
+  reviews: [{ type: mongoose.ObjectId, ref: "Review" }],
   recommended: Boolean,
   visibility: Boolean,
   quantity: Number,
