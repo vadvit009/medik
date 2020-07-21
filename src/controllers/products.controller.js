@@ -41,7 +41,7 @@ const getProduct = async (req, res) => {
     .populate("vendorID", "title -_id")
     .populate({
       path: "reviews",
-      select: "title desc userID -_id",
+      select: "title desc rating userID -_id",
       populate: { path: "userID", select: "fName -_id" },
     })
     .exec((err, prod) => {
