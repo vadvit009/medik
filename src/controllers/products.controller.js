@@ -1,5 +1,5 @@
 const { Product } = require("../models");
-const ObjectId = require("mongoose").Types.ObjectId;
+const { ObjectId } = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
   const { search, page } = req.query;
@@ -36,7 +36,6 @@ const getAllProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   const { id } = req.params;
-
   return await Product.findById(ObjectId(id))
     .populate("categoryID", "parentID subParentID title desc -_id")
     .populate("vendorID", "title -_id")
@@ -107,7 +106,7 @@ const updateProduct = async (req, res) => {
     article,
     gallery,
   } = req.body;
-  return await Product.findByIdAndUpdate(id, {
+  return await Product.findByIdAndUpdate(ObjectId(id), {
     title,
     desc,
     price,
@@ -130,37 +129,10 @@ const updateProduct = async (req, res) => {
 };
 
 const restoreProduct = async (req, res) => {
-  if (req.session.loggedIn) {
-    const { id } = req.params;
-    return await Product.update(
-      { deletedAt: null },
-      { where: { productId: id } }
-    )
-      .then((product) => {
-        const bearerToken = req.headers.authorization;
-        if (bearerToken) {
-          const token = bearerToken.split(" ")[1];
-          jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-            console.log("err = ", err);
-            if (err) return res.sendStatus(403);
-            // next();
-            res.json(product);
-          });
-        } else {
-          res.sendStatus(401);
-        }
-      })
-      .catch((err) => console.log(err));
-  } else {
-    res.json({ isAdmin: false });
-  }
-};
-
-const softDeleteProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.update(
-    { deletedAt: "now()" },
-    { where: { productId: id } }
+  return await Product.findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { deletedAt: null }
   )
     .then((product) => {
       const bearerToken = req.headers.authorization;
@@ -177,12 +149,34 @@ const softDeleteProduct = async (req, res) => {
       }
     })
     .catch((err) => console.log(err));
+};
+
+const softDeleteProduct = async (req, res) => {
+  const { id } = req.params;
+  return await Product.findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { deletedAt: Date.now() }
+  )
+    .then((product) => {
+      const bearerToken = req.headers.authorization;
+      if (bearerToken) {
+        const token = bearerToken.split(" ")[1];
+        jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
+          console.log("err = ", err);
+          if (err) return res.sendStatus(403);
+          res.json(product);
+        });
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => console.log(err));
   // res.json({ isAdmin: false });
 };
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.destroy({ where: { productId: id } }).then((product) => {
+  return await Product.findByIdAndDelete({ _id: id }).then((product) => {
     res.json(product);
   });
 };

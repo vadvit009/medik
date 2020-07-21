@@ -7,7 +7,14 @@ const Product = new Schema({
   price: Number,
   salePrice: Number,
   attr: Array,
-  attrOptions: Array,
+  attrOptions: [
+    {
+      Розмір: String,
+      Колір: String,
+      Вага: Number,
+      priceAtrr: Number,
+    },
+  ],
   categoryID: [{ type: mongoose.ObjectId, ref: "Category" }],
   vendorID: [{ type: mongoose.ObjectId, ref: "Vendor" }],
   reviews: [{ type: mongoose.ObjectId, ref: "Review" }],

@@ -2,6 +2,7 @@ const { User } = require("../models");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { restorePassword } = require("../mailer");
+const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -90,30 +91,42 @@ module.exports = {
 
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, phone, email, password, roleId } = req.body;
+    const {
+      fName,
+      lName,
+      phone,
+      email,
+      password,
+      fatherName,
+      gallery,
+    } = req.body;
     const key = crypto.createHash("md5").update(password).digest("hex");
-    return await User.update(
+    return await User.findByIdAndUpdate(
+      { _id: ObjectId(id) },
       {
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        email: email,
-        key: key,
-        roleId: roleId,
-      },
-      { where: { userId: id } }
+        fName,
+        lName,
+        phone,
+        email,
+        fatherName,
+        gallery,
+        password: key,
+        role: false,
+      }
     )
       .then((user) => res.json(user))
       .catch((err) => err && res.sendStatus(409));
   },
 
   restorePassword: async (req, res) => {
-    const { id } = req.query;
-    const email = "agrinkiv74@gmail.com, alexander.khanas.work@gmail.com";
-    return await User.findOne({ userId: id })
+    const { email } = req.query;
+    return await User.findOne({ email: email })
       .then((user) => {
-        res.json(user);
-        restorePassword(email);
+        if (user) {
+          restorePassword(email);
+        } else {
+          res.send("No User with this email");
+        }
       })
       .catch((err) => err && res.sendStatus(409));
     // const { id } = req.params;
@@ -126,21 +139,27 @@ module.exports = {
 
   restoreUser: async (req, res) => {
     const { id } = req.params;
-    return await User.update({ deletedAt: null }, { where: { userId: id } })
+    return await User.findByIdAndUpdate(
+      { _id: ObjectId(id) },
+      { deletedAt: null }
+    )
       .then((user) => res.json(user))
       .catch((err) => res.send(err));
   },
 
   softDeleteUser: async (req, res) => {
     const { id } = req.params;
-    return await User.update({ deletedAt: "now()" }, { where: { userId: id } })
+    return await User.findByIdAndUpdate(
+      { _id: ObjectId(id) },
+      { deletedAt: Date.now() }
+    )
       .then((user) => res.json(user))
       .catch((err) => res.send(err));
   },
 
   deleteUser: async (req, res) => {
     const { id } = req.params;
-    return await User.destroy({ where: { userId: id } })
+    return await User.findByIdAndRemove({ _id: ObjectId(id) })
       .then((user) => res.json(user))
       .catch((err) => res.send(err));
   },
