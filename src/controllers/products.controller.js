@@ -63,6 +63,7 @@ const createProduct = async (req, res) => {
     recommended,
     visibility,
     quantity,
+    reviews,
     article,
     gallery,
   } = req.body;
@@ -73,6 +74,7 @@ const createProduct = async (req, res) => {
     salePrice,
     attr,
     attrOptions,
+    reviews,
     categoryID,
     vendorID,
     recommended,
