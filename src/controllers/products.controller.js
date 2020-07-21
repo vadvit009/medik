@@ -2,43 +2,87 @@ const { Product } = require("../models");
 const { ObjectId } = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
-  const { search, page } = req.query;
+  const { search, page, category } = req.query;
   console.log("SEARCH === " + search + " PAGE === " + page);
 
   const length = await Product.countDocuments().then((length) => length);
 
-  return await Product.aggregate([
-    {
-      $lookup: {
-        from: "category",
-        localField: "categoryID",
-        foreignField: "_id",
-        as: "categories",
-      },
-    },
-  ])
-    .skip(page > 1 ? (page - 1) * 24 : 0)
-    .limit(page ? page * 24 : 24)
-    .then((products) => {
-      search
-        ? res.send(
-            products.filter((product) =>
-              product.title.toLowerCase().includes(search.toLowerCase()) ||
-              product.desc.toLowerCase().includes(search.toLowerCase())
-                ? product
-                : null
-            )
-          )
-        : res.send({ products, length });
-    })
-    .catch((err) => res.send({ err: true, errorMsg: err }));
+  category
+    ? await Product.aggregate([
+        {
+          $lookup: {
+            from: "category",
+            localField: "categoryID",
+            foreignField: "_id",
+            as: "categories",
+          },
+        },
+        {
+          $match: {
+            $or: [
+              {
+                "categories.parentID": ObjectId(category),
+              },
+              {
+                "categories.subParentID": ObjectId(category),
+              },
+              {
+                "categories._id": ObjectId(category),
+              },
+            ],
+          },
+        },
+      ]).exec((err, result) => {
+        if (err) return res.send(err);
+        res.send(result);
+      })
+    : await Product.aggregate([
+        {
+          $lookup: {
+            from: "category",
+            localField: "categoryID",
+            foreignField: "_id",
+            as: "categories",
+          },
+        },
+      ])
+        .skip(page > 1 ? (page - 1) * 24 : 0)
+        .limit(page ? page * 24 : 24)
+        .then((products) => {
+          search
+            ? res.send(
+                products.filter((product) =>
+                  product.title.toLowerCase().includes(search.toLowerCase()) ||
+                  product.desc.toLowerCase().includes(search.toLowerCase())
+                    ? product
+                    : null
+                )
+              )
+            : res.send({ products, length });
+          // category
+          //   ? res.send(products.filter((product) => product.categories[0].title === category))
+          //   : res.send({ products, length });
+        })
+        .catch((err) => res.send({ err: true, errorMsg: err }));
 };
 
 const getProduct = async (req, res) => {
   const { id } = req.params;
   return await Product.findById(ObjectId(id))
-    .populate("categoryID", "parentID subParentID title desc -_id")
+    // .populate("categoryID", "parentID subParentID title desc -_id")
     .populate("vendorID", "title -_id")
+    .populate({
+      path: "categoryID",
+      select: "subParentID title desc",
+      populate: {
+        path: "subParentID",
+        select: "title",
+        populate: {
+          path: "parentID",
+          select: "title",
+        },
+      },
+    })
     .populate({
       path: "reviews",
       select: "title desc rating userID -_id",

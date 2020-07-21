@@ -15,7 +15,7 @@ app.use(
   session({
     resave: true,
     saveUninitialized: true,
-    secret: "MedTechnika",
+    secret: process.env.SESSION_SECRET,
     cookie: {
       secure: true,
       httpOnly: true,

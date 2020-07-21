@@ -9,6 +9,7 @@ const {
   restoreUser,
   softDeleteUser,
   logout,
+  changePassword,
   restorePassword,
 } = require("../controllers/user.controller");
 
@@ -25,6 +26,8 @@ app.post("/logout", logout);
 app.post("/register", register);
 
 app.post("/restore/password", restorePassword);
+
+app.post("/change/password", changePassword);
 
 app.patch("/user/:id", verifyUserToken, updateUser);
 

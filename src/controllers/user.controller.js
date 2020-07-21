@@ -125,17 +125,24 @@ module.exports = {
       .then((user) => {
         if (user) {
           restorePassword(email);
+          // jwt.sign()
+          res.sendStatus(200);
         } else {
-          res.send("No User with this email");
+          res.sendStatus(400);
         }
       })
       .catch((err) => err && res.sendStatus(409));
-    // const { id } = req.params;
-    // const { password } = req.body;
-    // const key = crypto.createHash("md5").update(password).digest("hex");
-    // return await User.findByIdAndUpdate(id, { password: key })
-    //   .then((user) => console.log(user))
-    //   .catch((err) => console.log(err));
+  },
+
+  changePassword: async (req, res) => {
+    const { email, password } = req.body;
+    const key = crypto.createHash("md5").update(password).digest("hex");
+    return await User.findOne({ email: email }, { password: key })
+      .then((user) => {
+        // jwt.verify()
+        res.send("pass changed successfully");
+      })
+      .catch((err) => res.send(err));
   },
 
   restoreUser: async (req, res) => {
