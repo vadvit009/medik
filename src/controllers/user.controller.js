@@ -120,7 +120,7 @@ module.exports = {
   },
 
   restorePassword: async (req, res) => {
-    const { email } = req.query;
+    const { email } = req.body;
     return await User.findOne({ email: email })
       .then((user) => {
         if (user) {
