@@ -64,17 +64,18 @@ module.exports = {
   },
 
   register: async (req, res) => {
-    const { fName, lName, phone, email, password, role } = req.body;
+    const { fName, lName, fatherName, phone, email, password } = req.body;
     const key = crypto.createHash("md5").update(password).digest("hex");
     return await User.findOne({ email: email }).then((user) => {
       if (!user) {
         User.create({
           fName,
           lName,
+          fatherName,
           phone,
           email,
           password: key,
-          role,
+          role: false,
         })
           .then((user) => {
             const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
