@@ -9,7 +9,14 @@ const path = require("path");
 const db = require("./src/db");
 const session = require("express-session");
 const passport = require("passport");
-const { Product, User, Review, Categories, News } = require("./src/routes");
+const {
+  Product,
+  User,
+  Review,
+  Categories,
+  News,
+  Orders,
+} = require("./src/routes");
 
 app.use(
   session({
@@ -37,7 +44,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api/v1", Product, User, Review, Categories, News);
+app.use("/api/v1", Product, User, Review, Categories, News, Orders);
 
 // use static
 app.use(express.static(path.resolve(__dirname, "./build")));

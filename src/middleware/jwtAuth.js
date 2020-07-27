@@ -9,7 +9,6 @@ const verifyAdminToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET_ADMIN, (err, userId) => {
-    console.log(err);
     if (err) return res.sendStatus(403);
     req.body.userId = userId;
     next();
@@ -25,7 +24,6 @@ const verifyUserToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    console.log(err);
     if (err) return res.sendStatus(403);
     req.body.userId = decoded.id;
     next();

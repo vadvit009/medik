@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
-  userID: mongoose.ObjectId,
-  products: mongoose.ObjectId,
+  userID: { type: mongoose.ObjectId, ref: "users" },
+  products: Array,
   sum: Number,
+  status: String,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date,

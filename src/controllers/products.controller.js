@@ -194,7 +194,7 @@ const restoreProduct = async (req, res) => {
         res.sendStatus(401);
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('err === ',err));
 };
 
 const softDeleteProduct = async (req, res) => {
@@ -216,7 +216,7 @@ const softDeleteProduct = async (req, res) => {
         res.sendStatus(401);
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('err === ',err));
   // res.json({ isAdmin: false });
 };
 

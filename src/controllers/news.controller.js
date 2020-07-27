@@ -8,7 +8,7 @@ const getAllNews = async (req, res) => {
 };
 
 const getNew = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   return await News.findById(id).exec((err, singleNew) => {
     if (err) return res.send(err);
     res.send(singleNew);

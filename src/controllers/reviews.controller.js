@@ -103,30 +103,26 @@ const acceptReview = async (req, res) => {
 };
 
 const restoreReview = async (req, res) => {
-  if (req.session.loggedIn) {
-    const { id } = req.params;
-    return await Review.findByIdAndUpdate(
-      { _id: ObjectId(id) },
-      { deletedAt: null }
-    )
-      .then((product) => {
-        const bearerToken = req.headers.authorization;
-        if (bearerToken) {
-          const token = bearerToken.split(" ")[1];
-          jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-            console.log("err = ", err);
-            if (err) return res.sendStatus(403);
-            // next();
-            res.json(product);
-          });
-        } else {
-          res.sendStatus(401);
-        }
-      })
-      .catch((err) => console.log(err));
-  } else {
-    res.json({ isAdmin: false });
-  }
+  const { id } = req.params;
+  return await Review.findByIdAndUpdate(
+    { _id: ObjectId(id) },
+    { deletedAt: null }
+  )
+    .then((product) => {
+      const bearerToken = req.headers.authorization;
+      if (bearerToken) {
+        const token = bearerToken.split(" ")[1];
+        jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
+          console.log("err = ", err);
+          if (err) return res.sendStatus(403);
+          // next();
+          res.json(product);
+        });
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => console.log("err === ", err));
 };
 
 const softDeleteReview = async (req, res) => {
