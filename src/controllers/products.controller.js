@@ -4,6 +4,9 @@ const { ObjectId } = require("mongoose").Types;
 const getAllProducts = async (req, res) => {
   const { search, page, category } = req.query;
   console.log("SEARCH === " + search + " PAGE === " + page);
+  console.log("CATEGORY === " + category);
+
+  const categoryArrayObjectIds = category.split(",").map((id) => ObjectId(id));
 
   const length = await Product.countDocuments().then((length) => length);
 
@@ -19,19 +22,28 @@ const getAllProducts = async (req, res) => {
         },
         {
           $match: {
-            $or: [
+            $and: [
               {
-                "categories.parentID": ObjectId(category),
-              },
-              {
-                "categories.subParentID": ObjectId(category),
-              },
-              {
-                "categories._id": ObjectId(category),
+                $or: [
+                  {
+                    "categories.parentID": { $in: categoryArrayObjectIds },
+                  },
+                  {
+                    "categories.subParentID": { $in: categoryArrayObjectIds },
+                  },
+                  {
+                    "categories._id": { $in: categoryArrayObjectIds },
+                  },
+                ],
               },
             ],
           },
         },
+        // {
+        //   $text: {
+        //     $search: search,
+        //   },
+        // },
       ]).exec((err, result) => {
         if (err) return res.send(err);
         res.send(result);
@@ -194,7 +206,7 @@ const restoreProduct = async (req, res) => {
         res.sendStatus(401);
       }
     })
-    .catch((err) => console.log('err === ',err));
+    .catch((err) => console.log("err === ", err));
 };
 
 const softDeleteProduct = async (req, res) => {
@@ -216,7 +228,7 @@ const softDeleteProduct = async (req, res) => {
         res.sendStatus(401);
       }
     })
-    .catch((err) => console.log('err === ',err));
+    .catch((err) => console.log("err === ", err));
   // res.json({ isAdmin: false });
 };
 
