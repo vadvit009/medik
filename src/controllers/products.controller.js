@@ -6,7 +6,8 @@ const getAllProducts = async (req, res) => {
   console.log("SEARCH === " + search + " PAGE === " + page);
   console.log("CATEGORY === " + category);
 
-  const categoryArrayObjectIds = category.split(",").map((id) => ObjectId(id));
+  const categoryArrayObjectIds =
+    category && category.split(",").map((id) => ObjectId(id));
 
   const length = await Product.countDocuments().then((length) => length);
 
