@@ -40,7 +40,7 @@ module.exports = {
                 httpOnly: true,
                 secure: true,
               });
-              res.json({ isAdmin: user.role, token: token });
+              res.json({ isAdmin: user.role });
             } else {
               const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
                 expiresIn: "1h",
