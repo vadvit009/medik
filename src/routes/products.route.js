@@ -13,7 +13,7 @@ const { verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/products", getAllProducts);
 
-app.post("/product", createProduct);
+app.post("/product", verifyAdminToken, createProduct);
 
 app.get("/product/:id", getProduct);
 

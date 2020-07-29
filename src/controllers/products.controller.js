@@ -7,7 +7,7 @@ const getAllProducts = async (req, res) => {
   console.log("CATEGORY === " + category);
 
   const categoryArrayObjectIds =
-    category && category.split(",").map((id) => ObjectId(id));
+    (category && category.split(",").map((id) => ObjectId(id))) || [];
 
   const length = await Product.countDocuments().then((length) => length);
 
@@ -40,15 +40,16 @@ const getAllProducts = async (req, res) => {
             ],
           },
         },
-        // {
-        //   $text: {
-        //     $search: search,
-        //   },
-        // },
-      ]).exec((err, result) => {
-        if (err) return res.send(err);
-        res.send(result);
-      })
+      ])
+        .skip(page > 1 ? (page - 1) * 24 : 0)
+        .limit(page ? page * 24 : 24)
+        .exec((err, result) => {
+          if (err) {
+            res.sendStatus(400);
+            return console.log(err);
+          }
+          res.send(result);
+        })
     : await Product.aggregate([
         {
           $lookup: {
@@ -72,9 +73,6 @@ const getAllProducts = async (req, res) => {
                 )
               )
             : res.send({ products, length });
-          // category
-          //   ? res.send(products.filter((product) => product.categories[0].title === category))
-          //   : res.send({ products, length });
         })
         .catch((err) => res.send({ err: true, errorMsg: err }));
 };
@@ -82,7 +80,6 @@ const getAllProducts = async (req, res) => {
 const getProduct = async (req, res) => {
   const { id } = req.params;
   return await Product.findById(ObjectId(id))
-    // .populate("categoryID", "parentID subParentID title desc -_id")
     .populate("vendorID", "title -_id")
     .populate({
       path: "categoryID",

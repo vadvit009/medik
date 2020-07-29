@@ -11,11 +11,11 @@ const {
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
-app.get("/reviews", getAllReviews);
+app.get("/reviews", verifyAdminToken, getAllReviews);
 
 app.get("/review/:id", verifyUserToken, getReview);
 
-app.post("/review", verifyUserToken, createReview);// -------- REVIEW CREATE ------------
+app.post("/review", verifyUserToken, createReview); // -------- REVIEW CREATE ------------
 
 app.delete("/review/:id", verifyAdminToken, deleteReview);
 
