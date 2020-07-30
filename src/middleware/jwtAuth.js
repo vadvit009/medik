@@ -24,8 +24,11 @@ const verifyUserToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403);
-    req.body.userId = decoded.id;
+    if (err) {
+      console.log(err);
+      return res.sendStatus(403);
+    }
+    req.body.id = decoded.id;
     next();
   });
 };

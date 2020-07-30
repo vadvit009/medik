@@ -11,9 +11,9 @@ module.exports = {
       .catch((err) => console.log(err));
   },
 
-  getUser: async (req, res, next) => {
-    const { id } = req.params;
-    return await User.findOne({ userId: id })
+  getUser: async (req, res) => {
+    const { id } = req.body;
+    return await User.findById(id)
       .then((user) => {
         res.json(user);
       })
@@ -43,11 +43,11 @@ module.exports = {
               //TODO user id send with cookie
               res.json({ isAdmin: user.role, aToken: token });
             } else {
-              const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
+              const token = jwt.sign({ id: user._id }, process.env.SECRET, {
                 expiresIn: "1h",
               });
               res.cookie("token", token, {
-                expires: "1h",
+                expires: new Date(Date.now() + 90000000),
                 secure: true,
                 httpOnly: true,
               });
@@ -55,13 +55,21 @@ module.exports = {
               res.send({ user, token });
             }
           } else {
+            console.log("err 1 ");
+
             res.sendStatus(403);
           }
         } else {
+          console.log("err 2 ");
+
           res.sendStatus(403);
         }
       })
-      .catch((err) => err && res.sendStatus(403));
+      .catch((err) => {
+        console.log("Err === ", err);
+
+        res.sendStatus(403);
+      });
   },
 
   logout: async (req, res) => {

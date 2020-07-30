@@ -17,7 +17,7 @@ const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/users", verifyAdminToken, getAllUsers);
 
-app.get("/profile/:id", verifyUserToken, getUser);
+app.get("/user", verifyUserToken, getUser);
 
 app.post("/login", login);
 
