@@ -105,8 +105,8 @@ module.exports = {
   },
 
   updateUser: async (req, res) => {
-    const { id } = req.params;
     const {
+      id,
       fName,
       lName,
       phone,
@@ -116,19 +116,16 @@ module.exports = {
       gallery,
     } = req.body;
     const key = crypto.createHash("md5").update(password).digest("hex");
-    return await User.findByIdAndUpdate(
-      { _id: ObjectId(id) },
-      {
-        fName,
-        lName,
-        phone,
-        email,
-        fatherName,
-        gallery,
-        password: key,
-        role: false,
-      }
-    )
+    return await User.findByIdAndUpdate(id, {
+      fName,
+      lName,
+      phone,
+      email,
+      fatherName,
+      gallery,
+      password: key,
+      role: false,
+    })
       .then((user) => res.json(user))
       .catch((err) => err && res.sendStatus(409));
   },
