@@ -50,6 +50,7 @@ app.use("/api/v1", Product, User, Review, Categories, News, Orders);
 app.use(express.static(path.resolve(__dirname, "./build")));
 
 app.get("*", (req, res) => {
+  res.header('Access-Control-Allow-Credentials', true)
   res.sendFile(path.resolve(__dirname, "./build/index.html"));
 });
 

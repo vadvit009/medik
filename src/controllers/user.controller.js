@@ -37,9 +37,9 @@ module.exports = {
               );
               res.cookie("token", token, {
                 expires: new Date(Date.now() + 90000000),
-                httpOnly: false,
-                domain: "localhost",
-                secure: false,
+                // httpOnly: false,
+                // domain: "localhost",
+                // secure: false,
               });
               res.json({ isAdmin: user.role });
             } else {
