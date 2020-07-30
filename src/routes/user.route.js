@@ -29,7 +29,7 @@ app.post("/restore/password", restorePassword);
 
 app.post("/change/password", changePassword);
 
-app.patch("/user/:id", verifyUserToken, updateUser);
+app.patch("/user", verifyUserToken, updateUser);
 
 app.delete("/user/:id", verifyAdminToken, deleteUser);
 
