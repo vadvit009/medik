@@ -121,7 +121,6 @@ module.exports = {
       email,
       fatherName,
       gallery,
-      role: false,
     })
       .then((user) => res.json(user))
       .catch((err) => err && res.sendStatus(409));
