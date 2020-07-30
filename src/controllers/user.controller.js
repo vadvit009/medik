@@ -39,7 +39,7 @@ module.exports = {
                 expires: new Date(Date.now() + 90000000),
                 httpOnly: false,
                 domain: "localhost",
-                secure: true,
+                secure: false,
               });
               res.json({ isAdmin: user.role });
             } else {
