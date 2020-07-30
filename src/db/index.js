@@ -6,6 +6,7 @@ const db = () => {
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     },
     (err) => {
       if (err) return console.log("ERROR = = = ", err);
