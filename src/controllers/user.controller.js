@@ -105,25 +105,25 @@ module.exports = {
   },
 
   updateUser: async (req, res) => {
-    const {
+    const { id, fName, lName, phone, email, fatherName, gallery } = req.body;
+    return await User.findByIdAndUpdate(
       id,
-      fName,
-      lName,
-      phone,
-      email,
-      fatherName,
-      gallery,
-    } = req.body;
-    return await User.findByIdAndUpdate(id, {
-      fName,
-      lName,
-      phone,
-      email,
-      fatherName,
-      gallery,
-    })
-      .then((user) => res.json(user))
-      .catch((err) => err && res.sendStatus(409));
+      {
+        fName,
+        lName,
+        phone,
+        email,
+        fatherName,
+        gallery,
+      },
+      (err, user) => {
+        if (err) return res.sendStatus(400);
+        console.log(user);
+        res.send(user);
+      }
+    );
+    // .then((user) => res.json(user))
+    // .catch((err) => err && res.sendStatus(409));
   },
 
   restorePassword: async (req, res) => {
