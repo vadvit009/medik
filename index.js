@@ -18,18 +18,18 @@ const {
   Orders,
 } = require("./src/routes");
 
-// app.use(
-//   session({
-//     resave: true,
-//     saveUninitialized: true,
-//     secret: process.env.SESSION_SECRET,
-//     cookie: {
-//       secure: true,
-//       httpOnly: true,
-//       expires: new Date(Date.now() + 60 * 60 * 1000),
-//     },
-//   })
-// );
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    },
+  })
+);
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,7 +50,6 @@ app.use("/api/v1", Product, User, Review, Categories, News, Orders);
 app.use(express.static(path.resolve(__dirname, "./build")));
 
 app.get("*", (req, res) => {
-  res.header('Access-Control-Allow-Credentials', true)
   res.sendFile(path.resolve(__dirname, "./build/index.html"));
 });
 

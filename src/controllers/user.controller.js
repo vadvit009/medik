@@ -35,19 +35,18 @@ module.exports = {
                   expiresIn: "1h",
                 }
               );
-              res.cookie("token", token, {
-                expires: new Date(Date.now() + 90000000),
-                // httpOnly: false,
-                // domain: "localhost",
-                // secure: false,
-              });
-              res.json({ isAdmin: user.role });
+              // res.cookie("aToken", token, {
+              //   expires: new Date(Date.now() + 90000000),
+              //   httpOnly: true,
+              //   secure: true,
+              // });
+              res.json({ isAdmin: user.role, aToken: token });
             } else {
               const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
                 expiresIn: "1h",
               });
-              res.cookie("token", token);
-              res.send(user);
+              // res.cookie("token", token);
+              res.send({ user, token });
             }
           } else {
             res.sendStatus(403);
