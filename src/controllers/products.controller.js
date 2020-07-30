@@ -2,7 +2,13 @@ const { Product } = require("../models");
 const { ObjectId } = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
-  const { search, page, category } = req.query;
+  const { search, page, category, sort } = req.query;
+  const sortBy = () => {
+    if (sort === undefined) return { title: -1 };
+    if (sort === "recommended") return { recommended: -1 };
+    if (sort === "priceMinus") return { price: 1 };
+    if (sort === "price") return { price: -1 };
+  };
   console.log("SEARCH === " + search + " PAGE === " + page);
   console.log("CATEGORY === " + category);
 
@@ -40,9 +46,13 @@ const getAllProducts = async (req, res) => {
             ],
           },
         },
+        // {
+        //   $sort: sortBy(),
+        // },
       ])
         .skip(page > 1 ? (page - 1) * 24 : 0)
         .limit(page ? page * 24 : 24)
+        .sort(sortBy())
         .exec((err, result) => {
           if (err) {
             res.sendStatus(400);
@@ -59,9 +69,13 @@ const getAllProducts = async (req, res) => {
             as: "categories",
           },
         },
+        {
+          $sort: sortBy(),
+        },
       ])
         .skip(page > 1 ? (page - 1) * 24 : 0)
         .limit(page ? page * 24 : 24)
+        .sort(sortBy())
         .then((products) => {
           search
             ? res.send(
@@ -74,7 +88,7 @@ const getAllProducts = async (req, res) => {
               )
             : res.send({ products, length });
         })
-        .catch((err) => res.send({ err: true, errorMsg: err }));
+        .catch((err) => console.log(err));
 };
 
 const getProduct = async (req, res) => {
