@@ -111,11 +111,9 @@ module.exports = {
       lName,
       phone,
       email,
-      password,
       fatherName,
       gallery,
     } = req.body;
-    const key = crypto.createHash("md5").update(password).digest("hex");
     return await User.findByIdAndUpdate(id, {
       fName,
       lName,
@@ -123,7 +121,6 @@ module.exports = {
       email,
       fatherName,
       gallery,
-      password: key,
       role: false,
     })
       .then((user) => res.json(user))
