@@ -35,17 +35,23 @@ module.exports = {
                   expiresIn: "1h",
                 }
               );
-              // res.cookie("aToken", token, {
-              //   expires: new Date(Date.now() + 90000000),
-              //   httpOnly: true,
-              //   secure: true,
-              // });
+              res.cookie("aToken", token, {
+                expires: new Date(Date.now() + 90000000),
+                httpOnly: true,
+                secure: true,
+              });
+              //TODO user id send with cookie
               res.json({ isAdmin: user.role, aToken: token });
             } else {
               const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
                 expiresIn: "1h",
               });
-              // res.cookie("token", token);
+              res.cookie("token", token, {
+                expires: "1h",
+                secure: true,
+                httpOnly: true,
+              });
+              res.cookie("_id", user._id);
               res.send({ user, token });
             }
           } else {
