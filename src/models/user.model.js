@@ -8,7 +8,7 @@ const User = new mongoose.Schema({
   phone: Number,
   password: String,
   address: String,
-  gallery: Array,
+  gallery: String,
   role: Boolean,
   createdAt: Date,
   updatedAt: Date,
