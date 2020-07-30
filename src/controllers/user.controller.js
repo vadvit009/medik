@@ -38,6 +38,7 @@ module.exports = {
               res.cookie("token", token, {
                 expires: new Date(Date.now() + 90000000),
                 httpOnly: false,
+                domain: "localhost",
                 secure: true,
               });
               res.json({ isAdmin: user.role });

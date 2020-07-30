@@ -18,18 +18,18 @@ const {
   Orders,
 } = require("./src/routes");
 
-app.use(
-  session({
-    resave: true,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-      secure: true,
-      httpOnly: true,
-      expires: new Date(Date.now() + 60 * 60 * 1000),
-    },
-  })
-);
+// app.use(
+//   session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: process.env.SESSION_SECRET,
+//     cookie: {
+//       secure: true,
+//       httpOnly: true,
+//       expires: new Date(Date.now() + 60 * 60 * 1000),
+//     },
+//   })
+// );
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
