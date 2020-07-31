@@ -66,14 +66,13 @@ module.exports = {
     const defaultPath = "https://medtechnika-te.herokuapp.com/assets/user/";
 
     userUpload.single("avatar")(req, res, (err) => {
-      console.log("file === ", req.file);
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
         return res.status(500).json(err);
       }
       User.findByIdAndUpdate(id, {
-        gallery: defaultPath + id + req.file.originalname,
+        gallery: defaultPath + id + "/" + req.file.originalname,
       })
         .then((upload) => {
           res.sendStatus(200);
