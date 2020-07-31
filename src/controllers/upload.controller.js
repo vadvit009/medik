@@ -1,7 +1,7 @@
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const folderPath = path.resolve(__dirname, "../assets/products/");
+const folderPath = path.resolve(__dirname, "../../build/assets/products/");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -40,7 +40,7 @@ module.exports = {
       return res.sendStatus(200);
     });
   },
-  
+
   userUpload: (req, res) => {
     upload.single("avatar")(req, res, (err) => {
       if (err instanceof multer.MulterError) {
