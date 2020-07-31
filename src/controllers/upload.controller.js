@@ -2,6 +2,8 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
+const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
+const { User } = require("../models");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,13 +19,13 @@ const storage = multer.diskStorage({
 
 const userStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (!fs.existsSync(folderPath + "/" + req.params.id)) {
-      fs.mkdirSync(folderPath + "/" + req.params.id);
+    if (!fs.existsSync(userFolderPath + "/" + req.params.id)) {
+      fs.mkdirSync(userFolderPath + "/" + req.params.id);
     } else {
-      fs.rmdirSync(folderPath + "/" + req.params.id, { recursive: true });
-      fs.mkdirSync(folderPath + "/" + req.params.id);
+      fs.rmdirSync(userFolderPath + "/" + req.params.id, { recursive: true });
+      fs.mkdirSync(userFolderPath + "/" + req.params.id);
     }
-    cb(null, folderPath + "/" + req.params.id);
+    cb(null, userFolderPath + "/" + req.params.id);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -59,12 +61,28 @@ module.exports = {
   },
 
   userUpload: (req, res) => {
+    console.log("ID === ", req.body.id);
+    const { id } = req.body;
+    const defaultPath = "https://medtechnika-te.herokuapp.com/assets/user/";
+
     userUpload.single("avatar")(req, res, (err) => {
+      console.log("file === ", req.file);
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
         return res.status(500).json(err);
       }
+      User.findByIdAndUpdate(id, {
+        gallery: defaultPath + id + req.file.originalname,
+      })
+        .then((upload) => {
+          res.sendStatus(200);
+          console.log(upload);
+        })
+        .catch((err) => {
+          res.sendStatus(400);
+          console.log(err);
+        });
       return res.sendStatus(200);
     });
   },
