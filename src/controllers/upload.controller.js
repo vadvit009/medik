@@ -63,7 +63,7 @@ module.exports = {
   userUpload: (req, res) => {
     console.log("ID === ", req.body.id);
     const { id } = req.body;
-    const defaultPath = "https://medtechnika-te.herokuapp.com/assets/user/";
+    const defaultPath = "https://medtechnika-te.herokuapp.com/assets/users/";
 
     userUpload.single("avatar")(req, res, (err) => {
       if (err instanceof multer.MulterError) {
