@@ -15,7 +15,24 @@ const storage = multer.diskStorage({
   },
 });
 
+const userStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (!fs.existsSync(folderPath + "/" + req.params.id)) {
+      fs.mkdirSync(folderPath + "/" + req.params.id);
+    } else {
+      fs.rmdirSync(folderPath + "/" + req.params.id, { recursive: true });
+      fs.mkdirSync(folderPath + "/" + req.params.id);
+    }
+    cb(null, folderPath + "/" + req.params.id);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
 const upload = multer({ storage: storage });
+
+const userUpload = multer({ storage: userStorage });
 
 module.exports = {
   mainImgUpload: (req, res) => {
@@ -42,7 +59,7 @@ module.exports = {
   },
 
   userUpload: (req, res) => {
-    upload.single("avatar")(req, res, (err) => {
+    userUpload.single("avatar")(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
