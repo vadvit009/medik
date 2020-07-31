@@ -46,9 +46,6 @@ const getAllProducts = async (req, res) => {
             ],
           },
         },
-        // {
-        //   $sort: sortBy(),
-        // },
       ])
         .skip(page > 1 ? (page - 1) * 24 : 0)
         .limit(page ? page * 24 : 24)
@@ -228,17 +225,17 @@ const softDeleteProduct = async (req, res) => {
     { deletedAt: Date.now() }
   )
     .then((product) => {
-      const bearerToken = req.headers.authorization;
-      if (bearerToken) {
-        const token = bearerToken.split(" ")[1];
-        jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-          console.log("err = ", err);
-          if (err) return res.sendStatus(403);
+      // const bearerToken = req.headers.authorization;
+      // if (bearerToken) {
+      //   const token = bearerToken.split(" ")[1];
+      //   jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
+      //     console.log("err = ", err);
+      //     if (err) return res.sendStatus(403);
           res.json(product);
-        });
-      } else {
-        res.sendStatus(401);
-      }
+      //   });
+      // } else {
+      //   res.sendStatus(401);
+      // }
     })
     .catch((err) => console.log("err === ", err));
   // res.json({ isAdmin: false });

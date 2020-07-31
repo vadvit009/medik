@@ -14,25 +14,38 @@ const getAllOrders = async (req, res) => {
 
 const getOrder = async (req, res) => {
   const { id } = req.body;
-  return await Order.findById(id).exec((err, singleNew) => {
+  return await Order.findById(id).exec((err, order) => {
     if (err) return res.send(err);
-    res.send(singleNew);
+    res.send(order);
   });
 };
 
 const createOrder = async (req, res) => {
-  const {} = req.body;
-  return await Order.create().exec((err, singleNew) => {
-    if (err) return res.send(err);
-    res.send(singleNew);
+  const { userID, products, sum, status, delivery, paymentType } = req.body;
+  return await Order.create({
+    userID,
+    products,
+    sum,
+    status,
+    delivery,
+    paymentType,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    deletedAt: null,
+  }).exec((err, order) => {
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400);
+    }
+    res.send(order);
   });
 };
 
 const deleteOrder = async (req, res) => {
   const { id } = req.body;
-  return await Order.findByIdAndDelete(id).exec((err, deletedNew) => {
+  return await Order.findByIdAndDelete(id).exec((err, order) => {
     if (err) return res.send(err);
-    res.send("Deleted");
+    res.sendStatus(200).send("Deleted");
   });
 };
 
