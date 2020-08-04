@@ -1,4 +1,5 @@
-const { Order } = require("../models");
+const { Order, User, Product } = require("../models");
+const { ObjectId } = require("mongoose").Types;
 
 const getAllOrders = async (req, res) => {
   return await Order.find()
@@ -21,8 +22,20 @@ const getOrder = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { userID, products, sum, status, delivery, paymentType } = req.body;
-  return await Order.create({
+  const {
+    userID,
+    products,
+    sum,
+    status,
+    delivery,
+    paymentType,
+    deliveryCity,
+    deliveryStreet,
+    deliveryHouse,
+    deliveryApartament,
+    skladNP,
+  } = req.body;
+  await Order.create({
     userID,
     products,
     sum,
@@ -32,12 +45,31 @@ const createOrder = async (req, res) => {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: null,
-  }).exec((err, order) => {
+  })
+    .then((order) => console.log(order))
+    .catch((err) => err && res.sendStatus(400));
+  await User.findByIdAndUpdate(userID, {
+    deliveryCity,
+    deliveryStreet,
+    deliveryHouse,
+    deliveryApartament,
+    skladNP,
+  }).exec((err) => {
     if (err) {
       console.log(err);
-      return res.sendStatus(400);
+      res.sendStatus(400);
     }
-    res.send(order);
+    res.sendStatus(200);
+  });
+  await products.forEach((prod) => {
+    Product.findByIdAndUpdate(prod.id, {
+      $inc: { quantity: -prod.quantity },
+    }).exec((err) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+    });
   });
 };
 

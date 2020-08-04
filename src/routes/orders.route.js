@@ -13,7 +13,7 @@ app.get("/orders", verifyAdminToken, getAllOrders);
 
 app.get("/order/:id", verifyUserToken, getOrder);
 
-app.post("/order/:id", verifyUserToken, createOrder);
+app.post("/order", verifyUserToken, createOrder);
 
 app.delete("/order/:id", verifyAdminToken, deleteOrder);
 
