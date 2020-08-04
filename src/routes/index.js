@@ -5,5 +5,15 @@ const Categories = require("./categories.route");
 const News = require("./news.route");
 const Orders = require("./orders.route");
 const Upload = require("./upload.route");
+const Attr = require("./attr.route");
 
-module.exports = { Product, User, Review, Categories, News, Orders, Upload };
+module.exports = {
+  Product,
+  User,
+  Review,
+  Categories,
+  News,
+  Orders,
+  Upload,
+  Attr,
+};

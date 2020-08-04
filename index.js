@@ -17,6 +17,7 @@ const {
   News,
   Orders,
   Upload,
+  Attr,
 } = require("./src/routes");
 
 app.use(
@@ -45,7 +46,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api/v1", Product, User, Review, Categories, News, Orders, Upload);
+app.use(
+  "/api/v1",
+  Product,
+  User,
+  Review,
+  Categories,
+  News,
+  Orders,
+  Upload,
+  Attr
+);
 
 // use static
 app.use(express.static(path.resolve(__dirname, "./build")));
