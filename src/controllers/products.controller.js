@@ -46,6 +46,11 @@ const getAllProducts = async (req, res) => {
             ],
           },
         },
+        {
+          $project: {
+            desc: 0,
+          },
+        },
       ])
         .skip(page > 1 ? (page - 1) * 24 : 0)
         .limit(page ? page * 24 : 24)
@@ -64,6 +69,11 @@ const getAllProducts = async (req, res) => {
             localField: "categoryID",
             foreignField: "_id",
             as: "categories",
+          },
+        },
+        {
+          $project: {
+            desc: 0,
           },
         },
         {
@@ -231,7 +241,7 @@ const softDeleteProduct = async (req, res) => {
       //   jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
       //     console.log("err = ", err);
       //     if (err) return res.sendStatus(403);
-          res.json(product);
+      res.json(product);
       //   });
       // } else {
       //   res.sendStatus(401);
