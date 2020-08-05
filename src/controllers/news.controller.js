@@ -1,10 +1,15 @@
 const { News } = require("../models");
 
 const getAllNews = async (req, res) => {
-  return await News.find().exec((err, news) => {
-    if (err) return res.send(err);
-    res.send(news);
-  });
+  const { skip } = req.query;
+  return await News.find()
+    .skip(skip ? (skip - 1) * 3 : 0)
+    .limit(3)
+    .sort({ createdAt: -1 })
+    .exec((err, news) => {
+      if (err) return res.send(err);
+      res.send(news);
+    });
 };
 
 const getNew = async (req, res) => {
