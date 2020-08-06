@@ -58,13 +58,12 @@ const createCategory = async (req, res) => {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: null,
-  }).exec((err) => {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400);
-    }
-    res.sendStatus(200);
-  });
+  })
+    .then((cat) => {
+      console.log(cat);
+      return res.sendStatus(200);
+    })
+    .catch((err) => err && res.sendStatus(400));
 };
 
 module.exports = {
