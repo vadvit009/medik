@@ -58,6 +58,12 @@ const createCategory = async (req, res) => {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: null,
+  }).exec((err) => {
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400);
+    }
+    res.sendStatus(200);
   });
 };
 
