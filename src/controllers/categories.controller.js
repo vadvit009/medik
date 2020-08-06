@@ -47,7 +47,22 @@ const getAllLookupCategoies = async (req, res) => {
   });
 };
 
+const createCategory = async (req, res) => {
+  const { parentID, subParentID, title, desc, gallery } = req.body;
+  return await Category.create({
+    parentID,
+    subParentID,
+    title,
+    desc,
+    gallery,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    deletedAt: null,
+  });
+};
+
 module.exports = {
   getAllCategories,
   getAllLookupCategoies,
+  createCategory,
 };
