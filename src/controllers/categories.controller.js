@@ -66,8 +66,20 @@ const createCategory = async (req, res) => {
     .catch((err) => err && res.sendStatus(400));
 };
 
+const deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  return await Category.findOneAndDelete(id).exec((err) => {
+    if (err) {
+      console.log("ERROR WHEN DELETE CATEGORY === ", err);
+      return res.sendStatus(400);
+    }
+    res.sendStatus(200);
+  });
+};
+
 module.exports = {
   getAllCategories,
   getAllLookupCategoies,
   createCategory,
+  deleteCategory,
 };
