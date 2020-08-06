@@ -1,2 +1,0 @@
-{"_id":{"$oid":"5f291113a34ee0febfa23a72"},"name":"Розмір","deletedAt":null,"createdAt":{"$date":"2020-08-04T07:41:07.866Z"},"updatedAt":{"$date":"2020-08-04T07:41:35.096Z"},"__v":0}
-{"_id":{"$oid":"5f2912f7a34ee0febfa23a73"},"name":"Колір","deletedAt":null,"createdAt":{"$date":"2020-08-04T07:49:11.238Z"},"updatedAt":{"$date":"2020-08-04T07:49:11.238Z"},"__v":0}
