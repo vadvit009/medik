@@ -239,19 +239,21 @@ const deleteProduct = async (req, res) => {
 };
 
 const getProductHighScore = (req, res) => {
-  return Product.aggregate([{
-    $lookup: {
-      from: "reviews",
-      localField: "reviews",
-      foreignField: "_id",
-      as: "reviews"
+  return Product.aggregate([
+    {
+      $lookup: {
+        from: "reviews",
+        localField: "reviews",
+        foreignField: "_id",
+        as: "reviews"
+      },
     },
-  },
-  {
-    $match: {
-      "reviews.rating": { $gte: "4" }
-    }
-  }])
+    // {
+    //   $match: {
+    //     "reviews.rating": { $gte: "4" }
+    //   }
+    // }
+  ])
     .then(products => res.send(products))
     .catch(err => {
       console.log(err);
