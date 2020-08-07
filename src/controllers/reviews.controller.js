@@ -90,10 +90,13 @@ const createReview = async (req, res) => {
     .catch((err) => res.send({ error: true, errMsg: err }));
 };
 
-const updateReview = (req, res) => {
+const updateReview = async(req, res) => {
   const { id } = req.params;
+  console.log("ID REVIEW === ", id);
   const { userID, productID, title, desc, rating } = req.body;
-  return Review.findByIdAndUpdate(id, {
+  
+  console.log("REQ.BODY REVIEW === ", req.body);
+  return await Review.findByIdAndUpdate(id, {
     userID,
     productID,
     rating,
