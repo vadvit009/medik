@@ -1,18 +1,20 @@
 const app = require("express").Router();
 
 const {
-  getAllCategories,
+  // getAllCategories,
   getAllLookupCategoies,
   createCategory,
   deleteCategory,
 } = require("../controllers/categories.controller");
 
-app.get("/lookup", getAllCategories);
+const { verifyAdminToken } = require('../middleware/jwtAuth');
+
+// app.get("/lookup", getAllCategories);
 
 app.get("/categories", getAllLookupCategoies);
 
-app.post("/category", createCategory);
+app.post("/category", verifyAdminToken, createCategory);
 
-app.delete("/category/:id", deleteCategory);
+app.delete("/category/:id", verifyAdminToken, deleteCategory);
 
 module.exports = app;
