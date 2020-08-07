@@ -248,11 +248,11 @@ const getProductHighScore = (req, res) => {
         as: "reviews"
       },
     },
-    // {
-    //   $match: {
-    //     "reviews.rating": { $gte: "4" }
-    //   }
-    // }
+    {
+      $match: {
+        "reviews.rating": { $gte: "4" }
+      }
+    }
   ])
     .then(products => res.send(products))
     .catch(err => {
