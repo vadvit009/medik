@@ -250,7 +250,7 @@ const getProductHighScore = (req, res) => {
     },
     {
       $match: {
-        "reviews.rating": { $gte: "4" }
+        "reviews.rating": { $gte: 4 }
       }
     }
   ])
