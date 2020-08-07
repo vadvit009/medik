@@ -19,73 +19,73 @@ const getAllProducts = async (req, res) => {
 
   category
     ? await Product.aggregate([
-        {
-          $lookup: {
-            from: "category",
-            localField: "categoryID",
-            foreignField: "_id",
-            as: "categories",
-          },
+      {
+        $lookup: {
+          from: "category",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "categories",
         },
-        {
-          $match: {
-            $and: [
-              {
-                $or: [
-                  {
-                    "categories.parentID": { $in: categoryArrayObjectIds },
-                  },
-                  {
-                    "categories.subParentID": { $in: categoryArrayObjectIds },
-                  },
-                  {
-                    "categories._id": { $in: categoryArrayObjectIds },
-                  },
-                ],
-              },
-            ],
-          },
+      },
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                {
+                  "categories.parentID": { $in: categoryArrayObjectIds },
+                },
+                {
+                  "categories.subParentID": { $in: categoryArrayObjectIds },
+                },
+                {
+                  "categories._id": { $in: categoryArrayObjectIds },
+                },
+              ],
+            },
+          ],
         },
-      ])
-        .skip(page > 1 ? (page - 1) * 24 : 0)
-        .limit(page ? page * 24 : 24)
-        .sort(sortBy())
-        .exec((err, result) => {
-          if (err) {
-            res.sendStatus(400);
-            return console.log(err);
-          }
-          res.send(result);
-        })
+      },
+    ])
+      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .limit(page ? page * 24 : 24)
+      .sort(sortBy())
+      .exec((err, result) => {
+        if (err) {
+          res.sendStatus(400);
+          return console.log(err);
+        }
+        res.send(result);
+      })
     : await Product.aggregate([
-        {
-          $lookup: {
-            from: "category",
-            localField: "categoryID",
-            foreignField: "_id",
-            as: "categories",
-          },
+      {
+        $lookup: {
+          from: "category",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "categories",
         },
-        {
-          $sort: sortBy(),
-        },
-      ])
-        .skip(page > 1 ? (page - 1) * 24 : 0)
-        .limit(page ? page * 24 : 24)
-        .sort(sortBy())
-        .then((products) => {
-          search
-            ? res.send(
-                products.filter((product) =>
-                  product.title.toLowerCase().includes(search.toLowerCase()) ||
-                  product.desc.toLowerCase().includes(search.toLowerCase())
-                    ? product
-                    : null
-                )
-              )
-            : res.send({ products, length });
-        })
-        .catch((err) => console.log(err));
+      },
+      {
+        $sort: sortBy(),
+      },
+    ])
+      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .limit(page ? page * 24 : 24)
+      .sort(sortBy())
+      .then((products) => {
+        search
+          ? res.send(
+            products.filter((product) =>
+              product.title.toLowerCase().includes(search.toLowerCase()) ||
+                product.desc.toLowerCase().includes(search.toLowerCase())
+                ? product
+                : null
+            )
+          )
+          : res.send({ products, length });
+      })
+      .catch((err) => console.log(err));
 };
 
 const getProduct = async (req, res) => {
@@ -225,20 +225,9 @@ const softDeleteProduct = async (req, res) => {
     { deletedAt: Date.now() }
   )
     .then((product) => {
-      // const bearerToken = req.headers.authorization;
-      // if (bearerToken) {
-      //   const token = bearerToken.split(" ")[1];
-      //   jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-      //     console.log("err = ", err);
-      //     if (err) return res.sendStatus(403);
       res.json(product);
-      //   });
-      // } else {
-      //   res.sendStatus(401);
-      // }
     })
     .catch((err) => console.log("err === ", err));
-  // res.json({ isAdmin: false });
 };
 
 const deleteProduct = async (req, res) => {
@@ -248,7 +237,15 @@ const deleteProduct = async (req, res) => {
   });
 };
 
+const getProductHighScore = (req, res) => {
+  return Product.aggregate([{
+    
+  }]).then(products => res.send(products)).catch(err => { console.log(err); res.sendStatus(400) }
+  )
+}
+
 module.exports = {
+  getProductHighScore,
   getAllProducts,
   getProduct,
   createProduct,

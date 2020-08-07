@@ -72,12 +72,13 @@ const getReview = async (req, res) => {
 };
 
 const createReview = async (req, res) => {
-  const { userID, productID, title, review, accepted } = req.body;
+  const { userID, productID, title, desc, rating, accepted } = req.body;
   return await Review.create({
     userID,
     productID,
+    rating,
     title,
-    review,
+    desc,
     accepted,
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -88,6 +89,26 @@ const createReview = async (req, res) => {
     })
     .catch((err) => res.send({ error: true, errMsg: err }));
 };
+
+const updateReview = (req, res) => {
+  const { id } = req.query;
+  const { userID, productID, title, desc, rating, accepted } = req.body;
+  return Review.findByIdAndUpdate(id, {
+    userID,
+    productID,
+    rating,
+    title,
+    desc,
+    accepted,
+    updatedAt: Date.now(),
+  }).then(review => {
+    console.log(review);
+    return res.sendStatus(200)
+  }).catch(err => {
+    console.log(err);
+    return res.sendStatus(400)
+  })
+}
 
 const acceptReview = async (req, res) => {
   const { id } = req.params;
@@ -164,4 +185,5 @@ module.exports = {
   softDeleteReview,
   restoreReview,
   acceptReview,
+  updateReview
 };

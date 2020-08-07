@@ -6,6 +6,7 @@ const {
   restoreReview,
   softDeleteReview,
   createReview,
+  updateReview,
   acceptReview,
 } = require("../controllers/reviews.controller");
 
@@ -18,6 +19,8 @@ app.get("/review/:id", verifyUserToken, getReview);
 app.post("/review", verifyUserToken, createReview); // -------- REVIEW CREATE ------------
 
 app.delete("/review/:id", verifyAdminToken, deleteReview);
+
+app.patch("/review/:id", verifyAdminToken, updateReview);
 
 app.patch("/review/restore/:id", verifyAdminToken, restoreReview);
 

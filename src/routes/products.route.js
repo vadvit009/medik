@@ -6,6 +6,7 @@ const {
   updateProduct,
   restoreProduct,
   softDeleteProduct,
+  getProductHighScore,
   deleteProduct,
 } = require("../controllers/products.controller");
 
@@ -16,6 +17,8 @@ app.get("/products", getAllProducts);
 app.post("/product", verifyAdminToken, createProduct);
 
 app.get("/product/:id", getProduct);
+
+app.get("/products/highScore", getProductHighScore);
 
 app.patch("/product/:id", verifyAdminToken, updateProduct);
 
