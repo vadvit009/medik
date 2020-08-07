@@ -91,11 +91,8 @@ const createReview = async (req, res) => {
 };
 
 const updateReview = (req, res) => {
-  const { id } = req.query;
-  console.log("ID REVIEW === ", id);
+  const { id } = req.params;
   const { userID, productID, title, desc, rating } = req.body;
-  
-  console.log("REQ.BODY REVIEW === ", req.body);
   return Review.findByIdAndUpdate(id, {
     userID,
     productID,
