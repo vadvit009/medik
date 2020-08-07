@@ -92,14 +92,13 @@ const createReview = async (req, res) => {
 
 const updateReview = (req, res) => {
   const { id } = req.query;
-  const { userID, productID, title, desc, rating, accepted } = req.body;
+  const { userID, productID, title, desc, rating } = req.body;
   return Review.findByIdAndUpdate(id, {
     userID,
     productID,
     rating,
     title,
     desc,
-    accepted,
     updatedAt: Date.now(),
   }).then(review => {
     console.log(review);
