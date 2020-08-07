@@ -1,4 +1,5 @@
 const { Product } = require("../models");
+const { get } = require("mongoose");
 const { ObjectId } = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
@@ -239,9 +240,24 @@ const deleteProduct = async (req, res) => {
 
 const getProductHighScore = (req, res) => {
   return Product.aggregate([{
-    
-  }]).then(products => res.send(products)).catch(err => { console.log(err); res.sendStatus(400) }
-  )
+    $lookup: {
+      from: "reviews",
+      localField: "reviews",
+      foreignField: "_id",
+      as: "reviews"
+    },
+  },
+  {
+    $match: {
+      "reviews.rating": { $gte: "4" }
+    }
+  }])
+    .then(products => res.send(products))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(400)
+    }
+    )
 }
 
 module.exports = {
