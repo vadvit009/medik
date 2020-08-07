@@ -18,7 +18,7 @@ app.post("/product", verifyAdminToken, createProduct);
 
 app.get("/product/:id", getProduct);
 
-app.get("/products/highScore", getProductHighScore);
+app.get("/products/highRating", getProductHighScore);
 
 app.patch("/product/:id", verifyAdminToken, updateProduct);
 
