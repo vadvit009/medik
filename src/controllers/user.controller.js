@@ -97,7 +97,10 @@ module.exports = {
             });
             res.send({ token, user });
           })
-          .catch((err) => err && res.sendStatus(409));
+          .catch((err) => {
+            console.log(err);
+            res.sendStatus(403)
+          });
       } else {
         res.sendStatus(409);
       }
