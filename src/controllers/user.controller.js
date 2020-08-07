@@ -99,7 +99,7 @@ module.exports = {
           })
           .catch((err) => {
             console.log(err);
-            res.sendStatus(403)
+            res.sendStatus(400)
           });
       } else {
         res.sendStatus(409);
