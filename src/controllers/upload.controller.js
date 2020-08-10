@@ -51,10 +51,10 @@ module.exports = {
   galleryUpload: (req, res) => {
     const { id } = req.body;
     const defaultPath = "https://medtechnika.te.ua/assets/products/";
-    console.log("FILES === ", req.files);
+    console.log("FILES === ", req);
 
     upload.array("gallery", 10)(req, res, function (err) {
-      console.log("err", err);
+      console.log("ERROR UPLOAD === ", err);
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
