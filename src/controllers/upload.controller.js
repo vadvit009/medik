@@ -61,7 +61,7 @@ module.exports = {
         return res.status(500).json(err);
       }
       console.log("FILES === ", req.files);
-      const arrayWebp = req.files.map(img => sharp(img.path).webp())
+      const arrayWebp = req.files.map(img => sharp(img.path).toFormat("webp").toFile(folderPath + id + '/' + img.filename))
       console.log("ARRAY WEBP === ", arrayWebp);
       req.files.map(image =>
         Product.findByIdAndUpdate(id, {
