@@ -64,7 +64,7 @@ module.exports = {
       const arrayWebp = req.files.map(img => {
         sharp(img.path)
           .toFormat("webp")
-          .toFile(img.destination + "/" + img.originalname.split(".")[0])
+          .toFile(img.destination + "/" + img.originalname.split(".")[0] + '.webp')
           .then(res.status(505))
       })
       console.log("ARRAY WEBP === ", arrayWebp);
