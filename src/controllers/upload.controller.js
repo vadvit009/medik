@@ -51,7 +51,7 @@ module.exports = {
   galleryUpload: (req, res) => {
     const { id } = req.body;
     const defaultPath = "https://medtechnika.te.ua/assets/products/";
-    console.log("FILES === ", req);
+    console.log("FILES === ", req.file);
 
     upload.array("gallery", 10)(req, res, function (err) {
       console.log("ERROR UPLOAD === ", err);
