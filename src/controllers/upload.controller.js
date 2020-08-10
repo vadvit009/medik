@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     if (!fs.existsSync(folderPath + "/" + req.params.id)) {
       fs.mkdirSync(folderPath + "/" + req.params.id);
     }
-    console.log(fs.lstatSync(folderPath + "/" + req.params.id));
+    console.log("FolderSTATs ==",fs.readdirSync(folderPath + "/" + req.params.id));
     cb(null, folderPath + "/" + req.params.id);
   },
   filename: function (req, file, cb) {
@@ -66,7 +66,7 @@ module.exports = {
         sharp(img.path)
           .toFormat("webp")
           .toFile(img.destination + "/" + img.originalname.split(".")[0] + '.webp')
-          .then(res.status(505))
+          .then(ok => console.log(ok))
       })
       console.log("ARRAY WEBP === ", arrayWebp);
       req.files.map(image =>
