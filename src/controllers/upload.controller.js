@@ -62,7 +62,7 @@ module.exports = {
         return res.status(500).json(err);
       }
       console.log("FILES === ", req.files);
-      const arrayWebp = req.files.map(img => new CWebp(img))
+      const arrayWebp = req.files.map(img => new CWebp(img.buffer))
       console.log("ARRAY WEBP === ",arrayWebp);
       req.files.map(image =>
         Product.findByIdAndUpdate(id, {
@@ -72,7 +72,6 @@ module.exports = {
         })
           .then((upload) => {
             res.sendStatus(200);
-            console.log(upload);
           })
           .catch((err) => {
             res.sendStatus(400);
