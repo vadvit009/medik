@@ -66,7 +66,6 @@ module.exports = {
           $push: {
             gallery: [defaultPath + id + '/' + image.originalname]
           }
-          // gallery: [...gallery, defaultPath + id + "/" + image.originalname],
         })
           .then((upload) => {
             res.sendStatus(200);
@@ -77,18 +76,7 @@ module.exports = {
             console.log(err);
           })
       )
-      // Product.findByIdAndUpdate(id, {
-      //   gallery: defaultPath + id + "/" + req.file.originalname,
-      // })
-      //   .then((upload) => {
-      //     res.sendStatus(200);
-      //     console.log(upload);
-      //   })
-      //   .catch((err) => {
-      //     res.sendStatus(400);
-      //     console.log(err);
-      //   });
-      return res.sendStatus(200);
+      // return res.sendStatus(200);
     });
   },
 
