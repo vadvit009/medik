@@ -79,8 +79,7 @@ module.exports = {
             res.sendStatus(200);
           })
           .catch((err) => {
-            res.sendStatus(400);
-            console.log(err);
+            console.log("ERROR WHILE UPDATING PRODUCT-GALLERY === ",err);
           })
       )
       // return res.sendStatus(200);
