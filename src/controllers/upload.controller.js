@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
     if (!fs.existsSync(folderPath + "/" + req.params.id)) {
       fs.mkdirSync(folderPath + "/" + req.params.id);
     }
+    console.log(fs.lstatSync(folderPath + "/" + req.params.id));
     cb(null, folderPath + "/" + req.params.id);
   },
   filename: function (req, file, cb) {
