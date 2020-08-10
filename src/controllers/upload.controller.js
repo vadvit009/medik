@@ -51,8 +51,7 @@ module.exports = {
   galleryUpload: (req, res) => {
     const { id } = req.params;
     const defaultPath = "https://medtechnika.te.ua/assets/products/";
-    console.log("FILES === ", req.file);
-
+    
     upload.array("gallery", 10)(req, res, function (err) {
       console.log("ERROR UPLOAD === ", err);
       if (err instanceof multer.MulterError) {
@@ -60,6 +59,7 @@ module.exports = {
       } else if (err) {
         return res.status(500).json(err);
       }
+      console.log("FILES === ", req.file);
       Product.findByIdAndUpdate(id, {
         gallery: defaultPath + id + "/" + req.file.originalname,
       })
