@@ -59,7 +59,7 @@ module.exports = {
       } else if (err) {
         return res.status(500).json(err);
       }
-      console.log("FILES === ", req.file);
+      console.log("FILES === ", req.files);
       Product.findByIdAndUpdate(id, {
         gallery: defaultPath + id + "/" + req.file.originalname,
       })
