@@ -49,7 +49,7 @@ module.exports = {
   },
 
   galleryUpload: (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
     const defaultPath = "https://medtechnika.te.ua/assets/products/";
     console.log("FILES === ", req.file);
 
