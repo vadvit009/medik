@@ -51,7 +51,7 @@ module.exports = {
   galleryUpload: (req, res) => {
     const { id } = req.params;
     const defaultPath = "https://medtechnika.te.ua/assets/products/";
-    
+
     upload.array("gallery", 10)(req, res, function (err) {
       console.log("ERROR UPLOAD === ", err);
       if (err instanceof multer.MulterError) {
@@ -60,17 +60,30 @@ module.exports = {
         return res.status(500).json(err);
       }
       console.log("FILES === ", req.files);
-      Product.findByIdAndUpdate(id, {
-        gallery: defaultPath + id + "/" + req.file.originalname,
-      })
-        .then((upload) => {
-          res.sendStatus(200);
-          console.log(upload);
+      req.files.map(image =>
+        Product.findByIdAndUpdate(id, {
+          gallery: [defaultPath + id + "/" + image.originalname],
         })
-        .catch((err) => {
-          res.sendStatus(400);
-          console.log(err);
-        });
+          .then((upload) => {
+            res.sendStatus(200);
+            console.log(upload);
+          })
+          .catch((err) => {
+            res.sendStatus(400);
+            console.log(err);
+          })
+      )
+      // Product.findByIdAndUpdate(id, {
+      //   gallery: defaultPath + id + "/" + req.file.originalname,
+      // })
+      //   .then((upload) => {
+      //     res.sendStatus(200);
+      //     console.log(upload);
+      //   })
+      //   .catch((err) => {
+      //     res.sendStatus(400);
+      //     console.log(err);
+      //   });
       return res.sendStatus(200);
     });
   },
