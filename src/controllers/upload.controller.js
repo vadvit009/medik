@@ -4,6 +4,7 @@ const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
 const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
 const { User, Product } = require("../models");
+const { getLogger } = require("nodemailer/lib/shared");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -62,7 +63,7 @@ module.exports = {
       console.log("FILES === ", req.files);
       req.files.map(image =>
         Product.findByIdAndUpdate(id, {
-          gallery: [defaultPath + id + "/" + image.originalname],
+          gallery: [...gallery, defaultPath + id + "/" + image.originalname],
         })
           .then((upload) => {
             res.sendStatus(200);
