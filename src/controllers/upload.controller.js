@@ -76,7 +76,7 @@ module.exports = {
           }
         })
           .then((upload) => {
-            res.sendStatus(200);
+            console.log("UPDATE GALLERY IN PRODUCT === ",upload);
           })
           .catch((err) => {
             console.log("ERROR WHILE UPDATING PRODUCT-GALLERY === ",err);
