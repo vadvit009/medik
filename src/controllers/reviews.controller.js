@@ -67,8 +67,11 @@ const getReview = async (req, res) => {
       $match: { _id: ObjectId(id) },
     },
   ])
-    .then((product) => res.json(product))
-    .catch((err) => res.send({ err: true, errorMsg: err }));
+    .then((review) => res.json(review))
+    .catch((err) => {
+      console.log("ERROR WHEN GETTING REVIEW === ", err);
+      res.sendStatus(400)
+    });
 };
 
 const createReview = async (req, res) => {
@@ -84,10 +87,13 @@ const createReview = async (req, res) => {
     updatedAt: Date.now(),
     deletedAt: null,
   })
-    .then((product) => {
-      res.json(product);
+    .then((review) => {
+      res.json(review);
     })
-    .catch((err) => res.send({ error: true, errMsg: err }));
+    .catch((err) => {
+      console.log("ERROR WHEN CREATNG REVIEW === ", err);
+      res.sendStatus(400)
+    });
 };
 
 const updateReview = async (req, res) => {

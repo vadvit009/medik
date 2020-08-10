@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
 const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
-const { User } = require("../models");
+const { User, Product } = require("../models");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -49,6 +49,10 @@ module.exports = {
   },
 
   galleryUpload: (req, res) => {
+    const { id } = req.body;
+    const defaultPath = "https://medtechnika.te.ua/assets/products/";
+    console.log("FILES === ", req.files);
+
     upload.array("gallery", 10)(req, res, function (err) {
       console.log("err", err);
       if (err instanceof multer.MulterError) {
@@ -56,6 +60,17 @@ module.exports = {
       } else if (err) {
         return res.status(500).json(err);
       }
+      Product.findByIdAndUpdate(id, {
+        gallery: defaultPath + id + "/" + req.file.originalname,
+      })
+        .then((upload) => {
+          res.sendStatus(200);
+          console.log(upload);
+        })
+        .catch((err) => {
+          res.sendStatus(400);
+          console.log(err);
+        });
       return res.sendStatus(200);
     });
   },
@@ -63,7 +78,7 @@ module.exports = {
   userUpload: (req, res) => {
     console.log("ID === ", req.body.id);
     const { id } = req.body;
-    const defaultPath = "https://medtechnika-te.herokuapp.com/assets/users/";
+    const defaultPath = "https://medtechnika.te.ua/assets/users/";
 
     userUpload.single("avatar")(req, res, (err) => {
       if (err instanceof multer.MulterError) {

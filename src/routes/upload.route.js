@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const {
   mainImgUpload,
-  galleryUpload,userUpload
+  galleryUpload, userUpload
 } = require("../controllers/upload.controller");
 
 const { verifyAdminToken, verifyUserToken } = require("../middleware/jwtAuth");
