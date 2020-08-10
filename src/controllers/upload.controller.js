@@ -63,7 +63,10 @@ module.exports = {
       console.log("FILES === ", req.files);
       req.files.map(image =>
         Product.findByIdAndUpdate(id, {
-          gallery: [...gallery, defaultPath + id + "/" + image.originalname],
+          $push: {
+            gallery: [defaultPath + id + '/' + image.originalname]
+          }
+          // gallery: [...gallery, defaultPath + id + "/" + image.originalname],
         })
           .then((upload) => {
             res.sendStatus(200);
