@@ -4,8 +4,7 @@ const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
 const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
 const { User, Product } = require("../models");
-const { CWebp } = require('cwebp');
-
+const sharp = require('sharp');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -62,8 +61,8 @@ module.exports = {
         return res.status(500).json(err);
       }
       console.log("FILES === ", req.files);
-      const arrayWebp = req.files.map(img => new CWebp(img.buffer))
-      console.log("ARRAY WEBP === ",arrayWebp);
+      const arrayWebp = req.files.map(img => sharp(img.path).webp())
+      console.log("ARRAY WEBP === ", arrayWebp);
       req.files.map(image =>
         Product.findByIdAndUpdate(id, {
           $push: {
