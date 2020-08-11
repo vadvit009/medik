@@ -69,6 +69,8 @@ module.exports = {
           .then(ok => console.log(ok))
       })
       console.log("ARRAY WEBP === ", arrayWebp);
+      const galleryArray = req.files.map(image => defaultPath + id + '/' + image.originalname);
+      console.log("GALLERY ARRAY === ", galleryArray);
       // req.files.map(image =>
       Product.findByIdAndUpdate(id, {
         // $push: {
