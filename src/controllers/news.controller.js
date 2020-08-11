@@ -20,12 +20,22 @@ const getNew = async (req, res) => {
   });
 };
 
-const createNew = async (req, res) => {
-  const {} = req.body;
-  return await News.create().exec((err, singleNew) => {
-    if (err) return res.send(err);
+const createNew = (req, res) => {
+  const {
+    title,
+    desc,
+    gallery,
+  } = req.body;
+  return News.create({
+    title,
+    desc,
+    gallery,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    deletedAt: null
+  }).then((singleNew) => {
     res.send(singleNew);
-  });
+  }).catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
 };
 
 const deleteNew = async (req, res) => {

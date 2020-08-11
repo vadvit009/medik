@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     if (!fs.existsSync(folderPath + "/" + req.params.id)) {
       fs.mkdirSync(folderPath + "/" + req.params.id);
     }
-    console.log("FolderSTATs ==",fs.readdirSync(folderPath + "/" + req.params.id));
+    console.log("FolderSTATs ==", fs.readdirSync(folderPath + "/" + req.params.id));
     cb(null, folderPath + "/" + req.params.id);
   },
   filename: function (req, file, cb) {
@@ -69,19 +69,19 @@ module.exports = {
           .then(ok => console.log(ok))
       })
       console.log("ARRAY WEBP === ", arrayWebp);
-      req.files.map(image =>
-        Product.findByIdAndUpdate(id, {
-          $push: {
-            gallery: [defaultPath + id + '/' + image.originalname]
-          }
+      // req.files.map(image =>
+      Product.findByIdAndUpdate(id, {
+        // $push: {
+        gallery: [req.files.forEach(image => defaultPath + id + '/' + image.originalname)]
+        // }
+      })
+        .then((upload) => {
+          console.log("UPDATE GALLERY IN PRODUCT === ", upload);
         })
-          .then((upload) => {
-            console.log("UPDATE GALLERY IN PRODUCT === ",upload);
-          })
-          .catch((err) => {
-            console.log("ERROR WHILE UPDATING PRODUCT-GALLERY === ",err);
-          })
-      )
+        .catch((err) => {
+          console.log("ERROR WHILE UPDATING PRODUCT-GALLERY === ", err);
+        })
+      // )
       // return res.sendStatus(200);
     });
   },
