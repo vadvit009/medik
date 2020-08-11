@@ -51,12 +51,12 @@ const getAllProducts = async (req, res) => {
       .skip(page > 1 ? (page - 1) * 24 : 0)
       .limit(page ? page * 24 : 24)
       .sort(sortBy())
-      .exec((err, result) => {
+      .exec((err, products) => {
         if (err) {
           res.sendStatus(400);
           return console.log(err);
         }
-        res.send(result);
+        res.send({ products, length });
       })
     : await Product.aggregate([
       {
