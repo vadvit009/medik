@@ -74,7 +74,7 @@ module.exports = {
       // req.files.map(image =>
       Product.findByIdAndUpdate(id, {
         // $push: {
-        gallery: [req.files.forEach(image => defaultPath + id + '/' + image.originalname)]
+        gallery: galleryArray
         // }
       })
         .then((upload) => {
