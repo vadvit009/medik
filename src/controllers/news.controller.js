@@ -56,7 +56,7 @@ const deleteNew = async (req, res) => {
 const uploadPhoto = (req, res) => {
   console.log('REQ.BODY === ', req.body);
 
-  upload(req, res, function (err) {
+  (req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
