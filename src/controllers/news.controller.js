@@ -51,7 +51,7 @@ const deleteNew = async (req, res) => {
   });
 };
 
-const uploadPhoto = () => {
+const uploadPhoto = (req, res) => {
 
   const multer = require('multer');
   const folderPath = path.resolve(__dirname, "../../build/assets/news/");
