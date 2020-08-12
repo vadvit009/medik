@@ -27,5 +27,8 @@
     "passport-google-oauth": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
     "sharp": "^0.25.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0"
   }
 }
