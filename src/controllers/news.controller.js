@@ -1,4 +1,5 @@
 const { News } = require("../models");
+const path = require('path');
 
 const getAllNews = async (req, res) => {
   const { skip } = req.query;
