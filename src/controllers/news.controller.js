@@ -1,7 +1,27 @@
 const { News } = require("../models");
 const path = require('path');
 const fs = require('fs');
-const { log } = require("console");
+
+const multer = require('multer');
+const folderPath = path.resolve(__dirname, "../../build/assets/news/");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    console.log('REQ.BODY.ID === ', req.body.id);
+    if (!fs.existsSync(folderPath + "/" + req.body.id)) {
+      fs.mkdirSync(folderPath + "/" + req.body.id);
+    } else {
+      fs.rmdirSync(folderPath + "/" + req.body.id, { recursive: true });
+      fs.mkdirSync(folderPath + "/" + req.body.id);
+    }
+    cb(null, folderPath + "/" + req.body.id);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const getAllNews = async (req, res) => {
   const { skip } = req.query;
@@ -25,6 +45,7 @@ const getNew = async (req, res) => {
 
 const createNew = (req, res, next) => {
   console.log('REQ === ', req.body);
+  // console.log('REQ.FORMDATA === ', req.formData);
   const {
     title,
     desc,
@@ -55,28 +76,7 @@ const deleteNew = async (req, res) => {
 };
 
 const uploadPhoto = (req, res) => {
-  console.log('REQ.BODY === ', req.body.id);
-
-  const multer = require('multer');
-  const folderPath = path.resolve(__dirname, "../../build/assets/news/");
-
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      console.log('REQ.BODY.ID === ', req.body.id);
-      if (!fs.existsSync(folderPath + "/" + req.body.id)) {
-        fs.mkdirSync(folderPath + "/" + req.body.id);
-      } else {
-        fs.rmdirSync(folderPath + "/" + req.body.id, { recursive: true });
-        fs.mkdirSync(folderPath + "/" + req.body.id);
-      }
-      cb(null, folderPath + "/" + req.body.id);
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  });
-
-  const upload = multer({ storage: storage });
+  console.log('REQ.BODY === ', req.body);
 
   upload.single("gallery")(req, res, function (err) {
     if (err instanceof multer.MulterError) {
