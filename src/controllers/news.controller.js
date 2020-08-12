@@ -45,7 +45,7 @@ const getNew = async (req, res) => {
 
 const createNew = (req, res, next) => {
   console.log('REQ === ', req.body);
-  // console.log('REQ.FORMDATA === ', req.formData);
+  console.log('REQ.FIELDS === ', req.fields);
   const {
     title,
     desc,

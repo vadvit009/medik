@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const News = new mongoose.Schema({
   title: String,
   desc: String,
-  gallery: Array,
+  gallery: String,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date,
