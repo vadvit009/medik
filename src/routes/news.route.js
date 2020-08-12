@@ -14,7 +14,7 @@ app.get("/news", getAllNews);
 
 app.get("/new/:id", getNew);
 
-app.post("/new", verifyAdminToken, createNew, uploadPhoto);
+app.post("/new", verifyAdminToken, createNew)//, uploadPhoto);
 
 app.delete("/new/:id", verifyAdminToken, deleteNew);
 
