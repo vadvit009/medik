@@ -22,16 +22,15 @@ const getNew = async (req, res) => {
 
 const createNew = (req, res, next) => {
   console.log('REQ === ', req.body);
-  console.log('REQ.FIELDS === ', req.fields);
+  console.log('REQ.FIELDS === ', req.file);
   const {
     title,
     desc,
-    gallery
   } = req.body;
+  const defaultUrl = "https://medtechnika.te.ua/assets/news/";
   return News.create({
     title,
     desc,
-    gallery,
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: null
@@ -39,10 +38,11 @@ const createNew = (req, res, next) => {
     .then((singleNew) => {
       console.log("CREATED NEWS === ", singleNew);
       req.body.id = singleNew._id
+      req.body.url = defaultUrl
       res.sendStatus(200)
     })
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
-    // .finally(next)
+    .finally(next)
 };
 
 const deleteNew = async (req, res) => {

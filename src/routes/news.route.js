@@ -5,6 +5,7 @@ const {
   getNew,
   createNew,
   deleteNew,
+  uploadPhoto
 } = require("../controllers/news.controller");
 
 const { verifyAdminToken } = require("../middleware/jwtAuth");
@@ -37,7 +38,7 @@ app.get("/news", getAllNews);
 
 app.get("/new/:id", getNew);
 
-app.post("/new", verifyAdminToken, upload, createNew);
+app.post("/new", verifyAdminToken, upload, createNew, uploadPhoto);
 
 app.delete("/new/:id", verifyAdminToken, deleteNew);
 
