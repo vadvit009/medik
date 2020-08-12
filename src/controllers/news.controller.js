@@ -64,7 +64,7 @@ const createNew = (req, res, next) => {
       req.body.id = singleNew._id
     })
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
-    .finally(next)
+    // .finally(next)
 };
 
 const deleteNew = async (req, res) => {
