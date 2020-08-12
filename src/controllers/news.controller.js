@@ -1,5 +1,29 @@
 const { News } = require("../models");
 
+const path = require('path');
+const fs = require('fs');
+
+const multer = require('multer');
+const folderPath = path.resolve(__dirname, "../../build/assets/news/");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const { id } = req.params;
+    if (!fs.existsSync(folderPath + "/" + id)) {
+      fs.mkdirSync(folderPath + "/" + id);
+    } else {
+      fs.rmdirSync(folderPath + "/" + id, { recursive: true });
+      fs.mkdirSync(folderPath + "/" + id);
+    }
+    cb(null, folderPath + "/" + id);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage }).any();
+
 const getAllNews = async (req, res) => {
   const { skip } = req.query;
   return await News.find()
@@ -27,7 +51,6 @@ const createNew = (req, res, next) => {
     title,
     desc,
   } = req.body;
-  const defaultUrl = "https://medtechnika.te.ua/assets/news/";
   return News.create({
     title,
     desc,
@@ -54,14 +77,18 @@ const deleteNew = async (req, res) => {
 };
 
 const uploadPhoto = (req, res) => {
-  console.log('REQ.BODY === ', req.body);
+  const { id } = req.params;
 
-  (req, res, function (err) {
+  upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
       return res.status(500).json(err);
     }
+    const defaultUrl = "https://medtechnika.te.ua/assets/news/";
+    News.findByIdAndUpdate(id, { gallery: defaultUrl + id + req.file.originalname })
+      .then(() => console.log("Updated successfully"))
+      .catch(err => { console.log("ERROR WHEN UPLOAD NEWS === ", err); res.sendStatus(400) })
     return res.status(200).send(req.file);
   });
 }
