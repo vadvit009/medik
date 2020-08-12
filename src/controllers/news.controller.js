@@ -24,7 +24,7 @@ const getNew = async (req, res) => {
 };
 
 const createNew = (req, res, next) => {
-  console.log('REQ === ',req);
+  console.log('REQ === ', req.body);
   const {
     title,
     desc,
@@ -39,7 +39,7 @@ const createNew = (req, res, next) => {
     deletedAt: null
   })
     .then((singleNew) => {
-      console.log("CREATED NEWS === ",singleNew);
+      console.log("CREATED NEWS === ", singleNew);
       req.body.id = singleNew._id
     })
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
