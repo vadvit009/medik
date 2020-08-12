@@ -24,6 +24,7 @@ const getNew = async (req, res) => {
 };
 
 const createNew = (req, res, next) => {
+  console.log('REQ === ',req);
   const {
     title,
     desc,
@@ -38,7 +39,7 @@ const createNew = (req, res, next) => {
     deletedAt: null
   })
     .then((singleNew) => {
-      console.log(singleNew);
+      console.log("CREATED NEWS === ",singleNew);
       req.body.id = singleNew._id
     })
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
@@ -54,13 +55,14 @@ const deleteNew = async (req, res) => {
 };
 
 const uploadPhoto = (req, res) => {
-  console.log('REQ.BODY === ',req.body);
+  console.log('REQ.BODY === ', req.body.id);
 
   const multer = require('multer');
   const folderPath = path.resolve(__dirname, "../../build/assets/news/");
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+      console.log('REQ.BODY.ID === ', req.body.id);
       if (!fs.existsSync(folderPath + "/" + req.body.id)) {
         fs.mkdirSync(folderPath + "/" + req.body.id);
       } else {
