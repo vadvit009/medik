@@ -1,6 +1,7 @@
 const { News } = require("../models");
 const path = require('path');
 const fs = require('fs');
+const { log } = require("console");
 
 const getAllNews = async (req, res) => {
   const { skip } = req.query;
@@ -53,19 +54,20 @@ const deleteNew = async (req, res) => {
 };
 
 const uploadPhoto = (req, res) => {
+  console.log('REQ.BODY === ',req.body);
 
   const multer = require('multer');
   const folderPath = path.resolve(__dirname, "../../build/assets/news/");
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      if (!fs.existsSync(folderPath + "/" + req.params.id)) {
-        fs.mkdirSync(folderPath + "/" + req.params.id);
+      if (!fs.existsSync(folderPath + "/" + req.body.id)) {
+        fs.mkdirSync(folderPath + "/" + req.body.id);
       } else {
-        fs.rmdirSync(folderPath + "/" + req.params.id, { recursive: true });
-        fs.mkdirSync(folderPath + "/" + req.params.id);
+        fs.rmdirSync(folderPath + "/" + req.body.id, { recursive: true });
+        fs.mkdirSync(folderPath + "/" + req.body.id);
       }
-      cb(null, folderPath + "/" + req.params.id);
+      cb(null, folderPath + "/" + req.body.id);
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname);
