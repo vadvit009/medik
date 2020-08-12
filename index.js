@@ -21,6 +21,10 @@ const {
   Vendor
 } = require("./src/routes");
 
+// parse application/x-www-form-urlencoded & application/json
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true ));
+
 app.use(
   session({
     resave: true,
@@ -42,10 +46,6 @@ db();
 app.disable("x-powered-by");
 // access cors (temporary)
 app.use(cors());
-
-// parse application/x-www-form-urlencoded & application/json
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 
 app.use(
   "/api/v1",
