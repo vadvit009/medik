@@ -18,6 +18,7 @@ const {
   Orders,
   Upload,
   Attr,
+  Vendor
 } = require("./src/routes");
 
 app.use(
@@ -55,7 +56,8 @@ app.use(
   News,
   Orders,
   Upload,
-  Attr
+  Attr,
+  Vendor
 );
 
 // use static

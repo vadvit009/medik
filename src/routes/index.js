@@ -6,6 +6,7 @@ const News = require("./news.route");
 const Orders = require("./orders.route");
 const Upload = require("./upload.route");
 const Attr = require("./attr.route");
+const Vendor = require("./vendor.route");
 
 module.exports = {
   Product,
@@ -16,4 +17,5 @@ module.exports = {
   Orders,
   Upload,
   Attr,
+  Vendor
 };
