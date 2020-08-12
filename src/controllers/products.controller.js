@@ -203,20 +203,9 @@ const restoreProduct = async (req, res) => {
     { deletedAt: null }
   )
     .then((product) => {
-      const bearerToken = req.headers.authorization;
-      if (bearerToken) {
-        const token = bearerToken.split(" ")[1];
-        jwt.verify(token, process.env.SECRET_ADMIN, (err, productId) => {
-          console.log("err = ", err);
-          if (err) return res.sendStatus(403);
-          // next();
-          res.json(product);
-        });
-      } else {
-        res.sendStatus(401);
-      }
+      res.json(product);
     })
-    .catch((err) => console.log("err === ", err));
+    .catch((err) => { res.sendStatus(400); console.log("err === ", err) });
 };
 
 const softDeleteProduct = async (req, res) => {
