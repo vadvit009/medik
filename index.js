@@ -45,7 +45,7 @@ app.use(cors());
 
 // parse application/x-www-form-urlencoded & application/json
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded());
 
 app.use(
   "/api/v1",
