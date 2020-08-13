@@ -76,9 +76,11 @@ const uploadPhoto = (req, res) => {
 
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
+      console.log('ERR WHEN UPLOAD', err);
+      return res.sendStatus(500); 
     } else if (err) {
-      return res.status(500).json(err);
+      console.log('ERR WHEN UPLOAD', err);
+      return res.sendStatus(500);
     }
     const defaultUrl = "https://medtechnika.te.ua/assets/news/";
     News.findByIdAndUpdate(id, { gallery: defaultUrl + id + req.files.originalname })
