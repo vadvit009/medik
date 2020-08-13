@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage }).any();
+const upload = multer({ storage: storage });
 
 const getAllNews = async (req, res) => {
   const { skip } = req.query;
@@ -74,10 +74,10 @@ const deleteNew = async (req, res) => {
 const uploadPhoto = (req, res) => {
   const { id } = req.params;
 
-  upload(req, res, function (err) {
+  upload.single('gallery')(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       console.log('ERR WHEN UPLOAD', err);
-      return res.sendStatus(500); 
+      return res.sendStatus(500);
     } else if (err) {
       console.log('ERR WHEN UPLOAD', err);
       return res.sendStatus(500);
