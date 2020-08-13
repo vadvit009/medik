@@ -85,7 +85,7 @@ const uploadPhoto = (req, res) => {
     const defaultUrl = "https://medtechnika.te.ua/assets/news/";
     console.log("REQ.FILE === ", req.file);
     console.log("REQ.FILES === ", req.files);
-    News.findByIdAndUpdate(id, { gallery: defaultUrl + id + req.file.originalname })
+    News.findByIdAndUpdate(id, { gallery: defaultUrl + id + '/' + req.file.originalname })
       .then(() => console.log("Updated successfully"))
       .catch(err => { console.log("ERROR WHEN UPLOAD NEWS === ", err); res.sendStatus(400) })
     return res.status(200).send(req.file);
