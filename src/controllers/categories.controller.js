@@ -60,10 +60,12 @@ const createCategory = async (req, res) => {
     deletedAt: null,
   })
     .then((cat) => {
-      console.log(cat);
-      return res.sendStatus(200);
+      res.send(cat)
     })
-    .catch((err) => err && res.sendStatus(400));
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400)
+    });
 };
 
 const deleteCategory = async (req, res) => {
