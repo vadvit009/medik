@@ -45,8 +45,6 @@ const getNew = async (req, res) => {
 };
 
 const createNew = (req, res, next) => {
-  console.log('REQ === ', req.body);
-  console.log('REQ.FIELDS === ', req.file);
   const {
     title,
     desc,
@@ -60,12 +58,9 @@ const createNew = (req, res, next) => {
   })
     .then((singleNew) => {
       console.log("CREATED NEWS === ", singleNew);
-      req.body.id = singleNew._id
-      req.body.url = defaultUrl
-      res.sendStatus(200)
+      res.send(singleNew._id)
     })
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
-    .finally(next)
 };
 
 const deleteNew = async (req, res) => {
