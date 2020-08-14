@@ -10,14 +10,16 @@ const createVendor = (req, res) => {
     title,
     desc,
     deletedAt: null,
-  }).then((vendor) => res.send(vendor));
+  })
+    .then(() => res.redirect('/vendors'))
+    .catch(err => { console.log(err); res.sendStatus(400) })
 };
 
 const editVendor = (req, res) => {
   const { id } = req.params;
   const { title, desc } = req.body;
   return Vendor.findByIdAndUpdate(id, { title, desc })
-    .then(() => res.sendStatus(200))
+    .then(() => res.redirect('/vendors'))
     .catch((err) => {
       console.log(err);
       res.sendStatus(400);
