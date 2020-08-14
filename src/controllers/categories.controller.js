@@ -64,7 +64,8 @@ const createCategory = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400)
+      // res.sendStatus(400)
+      res.redirect('/categories');
     });
 };
 
