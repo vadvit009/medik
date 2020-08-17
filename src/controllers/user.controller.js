@@ -10,11 +10,12 @@ const strategyFB = require('passport-facebook').Strategy
 passport.use(new strategyFB({
   clientID: process.env.FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
-  callbackURL: 'https://medtechnika.te.ua',
+  callbackURL: 'https://medtechnika.te.ua/login',
   profileFields: ['name', 'email', 'phone']
 },
   function (accessToken, refreshToken, profile, done) {
     const { email, first_name, last_name, phone } = profile._json;
+    console.log("PROFILE FROM FB === ",profile);
     const userData = {
       email,
       fName: first_name,
