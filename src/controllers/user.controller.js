@@ -11,10 +11,10 @@ passport.use(new strategyFB({
   clientID: process.env.FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
   callbackURL: 'https://medtechnika.te.ua/api/v1/fb/cb',
-  profileFields: ['name', 'email', 'phone']
+  profileFields: ['name', 'email']
 },
   function (accessToken, refreshToken, profile, done) {
-    const { email, first_name, last_name, phone } = profile._json;
+    const { email, first_name, last_name } = profile._json;
     console.log("PROFILE FROM FB === ", profile);
     console.log("ACCESSTOKEN FROM FB === ", accessToken);
     console.log("refreshTokenS FROM FB === ", refreshToken);
@@ -22,7 +22,6 @@ passport.use(new strategyFB({
       email,
       fName: first_name,
       lName: last_name,
-      phone,
       role: false
     };
     new User(userData).save();
