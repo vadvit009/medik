@@ -7,6 +7,8 @@ const { ObjectId } = require("mongoose").Types;
 const passport = require('passport');
 const strategyFB = require('passport-facebook').Strategy;
 
+const https = require('https')
+
 passport.use(new strategyFB({
   clientID: process.env.FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
@@ -15,9 +17,9 @@ passport.use(new strategyFB({
 },
   function (accessToken, refreshToken, profile, done) {
     const { email, first_name, last_name, id } = profile._json;
-    console.log("PROFILE FROM FB === ", profile);
-    console.log("ACCESSTOKEN FROM FB === ", accessToken);
-    console.log("refreshTokenS FROM FB === ", refreshToken);
+
+    https.request(`https://graph.facebook.com/me?fields="name,gender,location,picture,email"&access_token=${accessToken}`).then(result => { console.log(result); });
+
     const userData = {
       email,
       fName: first_name,
