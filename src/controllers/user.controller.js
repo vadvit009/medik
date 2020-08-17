@@ -21,6 +21,7 @@ passport.use(new strategyFB({
     https.request(`https://graph.facebook.com/me?fields="name,gender,location,picture,email"&access_token=${accessToken}`).then(result => { console.log(result); });
 
     const userData = {
+      facebookID: id ,
       email,
       fName: first_name,
       lName: last_name,
