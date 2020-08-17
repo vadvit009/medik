@@ -16,6 +16,8 @@ passport.use(new strategyFB({
   function (accessToken, refreshToken, profile, done) {
     const { email, first_name, last_name, phone } = profile._json;
     console.log("PROFILE FROM FB === ",profile);
+    console.log("ACCESSTOKEN FROM FB === ",accessToken);
+    console.log("refreshTokenS FROM FB === ",refreshToken);
     const userData = {
       email,
       fName: first_name,
