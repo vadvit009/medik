@@ -5,19 +5,19 @@ const { restorePassword } = require("../mailer");
 const { ObjectId } = require("mongoose").Types;
 
 const passport = require('passport');
-const strategyFB = require('passport-facebook').Strategy
+const strategyFB = require('passport-facebook').Strategy;
 
 passport.use(new strategyFB({
   clientID: process.env.FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
-  callbackURL: 'https://medtechnika.te.ua/login',
+  callbackURL: 'https://medtechnika.te.ua/api/v1/fb/cb',
   profileFields: ['name', 'email', 'phone']
 },
   function (accessToken, refreshToken, profile, done) {
     const { email, first_name, last_name, phone } = profile._json;
-    console.log("PROFILE FROM FB === ",profile);
-    console.log("ACCESSTOKEN FROM FB === ",accessToken);
-    console.log("refreshTokenS FROM FB === ",refreshToken);
+    console.log("PROFILE FROM FB === ", profile);
+    console.log("ACCESSTOKEN FROM FB === ", accessToken);
+    console.log("refreshTokenS FROM FB === ", refreshToken);
     const userData = {
       email,
       fName: first_name,
@@ -208,11 +208,28 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  loginFb: 
-  // (req, res) => {
-    passport.authenticate('facebook')
+  loginFb: (req, res) => {
+    // passport.authenticate('facebook')
     // res.sendStatus(200)
-  // }
-  ,
-  loginGoogle: async (req, res) => { }
+  },
+  loginGoogle: async (req, res) => { },
+  cbFb: async (req, res) => {
+    const user = req.user;
+    console.log("FB USER === ", req.user);
+    const payload = {
+      id: user._id,
+      email: user.email,
+    };
+
+    jwt.sign(payload, secret, { expiresIn: 3600 }, (err, token) => {
+      if (err) {
+        res.status(500).send({
+          error: 'Error signing token',
+          raw: err,
+        });
+      }
+      res.send(token);
+    });
+  },
+  cbGoogle: async (req, res) => { }
 };
