@@ -11,6 +11,8 @@ const {
   logout,
   changePassword,
   restorePassword,
+  loginFb,
+  loginGoogle
 } = require("../controllers/user.controller");
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
@@ -20,6 +22,10 @@ app.get("/users", verifyAdminToken, getAllUsers);
 app.get("/user", verifyUserToken, getUser);
 
 app.post("/login", login);
+
+app.get("/login/fb", loginFb);
+
+app.get("/login/google", loginGoogle);
 
 app.post("/logout", logout);
 

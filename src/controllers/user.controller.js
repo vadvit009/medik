@@ -4,6 +4,29 @@ const jwt = require("jsonwebtoken");
 const { restorePassword } = require("../mailer");
 const { ObjectId } = require("mongoose").Types;
 
+const passport = require('passport');
+const strategyFB = require('passport-facebook').Strategy
+
+passport.use(new strategyFB({
+  clientID: process.env.FB_CLIENT_ID,
+  clientSecret: process.env.FB_CLIENT_SECRET,
+  callbackURL: 'https://medtechnika.te.ua',
+  profileFields: ['name', 'email', 'phone']
+},
+  function (accessToken, refreshToken, profile, done) {
+    const { email, first_name, last_name, phone } = profile._json;
+    const userData = {
+      email,
+      fName: first_name,
+      lName: last_name,
+      phone,
+      role: false
+    };
+    new User(userData).save();
+    done(null, profile);
+  }
+))
+
 module.exports = {
   getAllUsers: async (req, res) => {
     return await User.find({})
@@ -181,4 +204,12 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.send(err));
   },
+
+  loginFb: 
+  // (req, res) => {
+    passport.authenticate('facebook')
+    // res.sendStatus(200)
+  // }
+  ,
+  loginGoogle: async (req, res) => { }
 };

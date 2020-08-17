@@ -73,12 +73,32 @@ const createOrder = async (req, res) => {
   });
 };
 
+const updateOrder = async (res, req) => {
+  const { id } = req.params;
+  const { status, products } = req.body;
+  await Order.findByIdAndUpdate(id, { status }).exec(err => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400)
+    }
+  })
+  await products.forEach((prod) => {
+    Product.findByIdAndUpdate(prod.id, { $inc: { quantity: +prod.quantity } }).exec(err => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400)
+      }
+      res.sendStatus(200)
+    })
+  })
+}
+
 const deleteOrder = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   return await Order.findByIdAndDelete(id).exec((err, order) => {
     if (err) return res.send(err);
     res.sendStatus(200).send("Deleted");
   });
 };
 
-module.exports = { getAllOrders, getOrder, createOrder, deleteOrder };
+module.exports = { getAllOrders, getOrder, createOrder, updateOrder, deleteOrder };
