@@ -7,7 +7,8 @@ const { ObjectId } = require("mongoose").Types;
 const passport = require('passport');
 const strategyFB = require('passport-facebook').Strategy;
 
-const https = require('https')
+const https = require('https');
+https.globalAgent.options.ca = rootCas;
 
 passport.use(new strategyFB({
   clientID: process.env.FB_CLIENT_ID,
