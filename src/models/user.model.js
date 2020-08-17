@@ -14,7 +14,7 @@ const User = new mongoose.Schema({
   deliveryStreet: String,
   deliveryHouse: String,
   deliveryApartament: String,
-  skladNP: String,
+  deliveryWarehouse: String,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date,

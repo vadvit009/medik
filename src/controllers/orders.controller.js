@@ -53,7 +53,7 @@ const createOrder = async (req, res) => {
     deliveryStreet,
     deliveryHouse,
     deliveryApartament,
-    skladNP,
+    deliveryWarehouse,
   }).exec((err) => {
     if (err) {
       console.log(err);
