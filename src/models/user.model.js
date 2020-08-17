@@ -10,6 +10,8 @@ const User = new mongoose.Schema({
   address: String,
   gallery: String,
   role: Boolean,
+  facebookID: String,
+  googleID: String,
   deliveryCity: String,
   deliveryStreet: String,
   deliveryHouse: String,

@@ -14,7 +14,7 @@ passport.use(new strategyFB({
   profileFields: ['name', 'email']
 },
   function (accessToken, refreshToken, profile, done) {
-    const { email, first_name, last_name } = profile._json;
+    const { email, first_name, last_name, id } = profile._json;
     console.log("PROFILE FROM FB === ", profile);
     console.log("ACCESSTOKEN FROM FB === ", accessToken);
     console.log("refreshTokenS FROM FB === ", refreshToken);
@@ -24,6 +24,14 @@ passport.use(new strategyFB({
       lName: last_name,
       role: false
     };
+    User.findOne({ facebookID: id })
+      .exec(err => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(400);
+        }
+        User.create(userData).then(fbUser => res.status(200).send(fbUser))
+      })
     new User(userData).save();
     done(null, profile);
   }
@@ -211,7 +219,9 @@ module.exports = {
     // passport.authenticate('facebook')
     // res.sendStatus(200)
   },
+
   loginGoogle: async (req, res) => { },
+
   cbFb: async (req, res) => {
     const user = req.user;
     console.log("FB USER === ", req.user);
@@ -230,5 +240,6 @@ module.exports = {
       res.send(token);
     });
   },
+
   cbGoogle: async (req, res) => { }
 };

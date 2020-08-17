@@ -65,7 +65,7 @@ const createNew = (req, res, next) => {
 
 const deleteNew = async (req, res) => {
   const { id } = req.body;
-  return await News.findByIdAndDelete(id).exec((err, deletedNew) => {
+  return await News.findByIdAndRemove(id).exec((err, deletedNew) => {
     if (err) return res.send(err);
     res.send("Deleted");
   });
