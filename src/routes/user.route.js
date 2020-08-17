@@ -29,7 +29,7 @@ app.post("/login", login);
 
 app.get("/login/fb", passport.authenticate('facebook'), loginFb);
 
-app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }), cbFb);
+app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login', session: false }), cbFb);
 
 app.get("/login/google", passport.authenticate('google'), loginGoogle);
 
