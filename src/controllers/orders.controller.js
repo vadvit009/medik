@@ -33,7 +33,7 @@ const createOrder = async (req, res) => {
     deliveryStreet,
     deliveryHouse,
     deliveryApartament,
-    skladNP,
+    deliveryWarehouse,
   } = req.body;
   await Order.create({
     userID,

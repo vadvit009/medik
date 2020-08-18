@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Order } = require("../models");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { restorePassword } = require("../mailer");
@@ -251,5 +251,16 @@ module.exports = {
     });
   },
 
-  cbGoogle: async (req, res) => { }
+  cbGoogle: async (req, res) => { },
+
+  userOrderHistory: (req, res) => {
+    const { id } = req.params;
+    Order.find({ userID: id })
+      .exec((err, orders) => {
+        if (err) {
+          res.sendStatus(400)
+        }
+        res.send(orders)
+      })
+  }
 };
