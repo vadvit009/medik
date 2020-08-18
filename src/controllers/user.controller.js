@@ -25,6 +25,7 @@ passport.use(new strategyFB({
     };
     User.findOne({ facebookID: id })
       .then(user => {
+        console.log("USER === ", user);
         if (!user) {
           User.create(userData)
             .then(fbUser => res.status(200).send(fbUser))
@@ -32,6 +33,9 @@ passport.use(new strategyFB({
               console.log(err);
               res.sendStatus(409)
             })
+        }
+        else {
+          res.sendStatus(200)
         }
       })
       .catch(err => {

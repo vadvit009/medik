@@ -9,14 +9,14 @@ const creatreAttr = (req, res) => {
   return Attr.create({
     name,
     deletedAt: null,
-  }).then(() => res.redirect('/attr'));
+  }).then(() => res.redirect(307, '/attr'));
 };
 
 const editAttr = (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   return Attr.findByIdAndUpdate(id, { name })
-    .then(() => res.redirect('/attr'))
+    .then(() => res.redirect(307, '/attr'))
     .catch((err) => {
       console.log(err);
       res.sendStatus(400);
