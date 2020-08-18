@@ -15,7 +15,7 @@ passport.use(new strategyFB({
 },
   function (accessToken, refreshToken, profile, done) {
     const { email, first_name, last_name, id } = profile._json;
-
+    console.log("ACCESS TOKEN FB === ", accessToken);
     const userData = {
       facebookID: id,
       email,
@@ -24,14 +24,21 @@ passport.use(new strategyFB({
       role: false
     };
     User.findOne({ facebookID: id })
-      .exec(err => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(400);
+      .then(user => {
+        if (!user) {
+          User.create(userData)
+            .then(fbUser => res.status(200).send(fbUser))
+            .catch(err => {
+              console.log(err);
+              res.sendStatus(409)
+            })
         }
-        User.create(userData).then(fbUser => res.status(200).send(fbUser))
       })
-    new User(userData).save();
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(409)
+      })
+    // new User(userData).save();
     done(null, profile);
   }
 ))
