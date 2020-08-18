@@ -101,4 +101,15 @@ const deleteOrder = async (req, res) => {
   });
 };
 
-module.exports = { getAllOrders, getOrder, createOrder, updateOrder, deleteOrder };
+const userOrderHistory = (req, res) => {
+  const { id } = req.params;
+  Order.find({ userID: id })
+    .exec((err, orders) => {
+      if (err) {
+        res.sendStatus(400)
+      }
+      res.send(orders)
+    })
+}
+
+module.exports = { getAllOrders, getOrder, createOrder, updateOrder, deleteOrder, userOrderHistory };
