@@ -1,4 +1,4 @@
-const { User, Order } = require("../models");
+const { User } = require("../models");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { restorePassword } = require("../mailer");
@@ -14,11 +14,10 @@ passport.use(new strategyFB({
   profileFields: ['name', 'email']
 },
   function (accessToken, refreshToken, profile, done) {
-    const { email, first_name, last_name, id } = profile._json;
+    const { first_name, last_name, id } = profile._json;
     console.log("ACCESS TOKEN FB === ", accessToken);
     const userData = {
       facebookID: id,
-      email,
       fName: first_name,
       lName: last_name,
       role: false

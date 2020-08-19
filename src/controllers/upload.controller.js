@@ -71,20 +71,17 @@ module.exports = {
       console.log("ARRAY WEBP === ", arrayWebp);
       const galleryArray = req.files.map(image => defaultPath + id + '/' + image.originalname);
       console.log("GALLERY ARRAY === ", galleryArray);
-      // req.files.map(image =>
+
       Product.findByIdAndUpdate(id, {
-        // $push: {
         gallery: galleryArray
-        // }
       })
         .then((upload) => {
+          res.sendStatus(200)
           console.log("UPDATE GALLERY IN PRODUCT === ", upload);
         })
         .catch((err) => {
           console.log("ERROR WHILE UPDATING PRODUCT-GALLERY === ", err);
         })
-      // )
-      // return res.sendStatus(200);
     });
   },
 
