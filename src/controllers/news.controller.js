@@ -63,8 +63,26 @@ const createNew = (req, res, next) => {
     .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
 };
 
+const updateNew = (req, res, next) => {
+  const { id } = req.params;
+  const {
+    title,
+    desc,
+  } = req.body;
+  return News.findByIdAndUpdate(id, {
+    title,
+    desc,
+    updatedAt: Date.now(),
+  })
+    .then((singleNew) => {
+      console.log("Update NEWS === ", singleNew);
+      res.send(singleNew._id)
+    })
+    .catch(err => console.log("ERROR WHEN CREATE NEWS === ", err))
+};
+
 const deleteNew = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   return await News.findByIdAndRemove(id).exec((err, deletedNew) => {
     if (err) return res.send(err);
     res.send("Deleted");
@@ -92,4 +110,4 @@ const uploadPhoto = (req, res) => {
   });
 }
 
-module.exports = { getAllNews, getNew, createNew, deleteNew, uploadPhoto };
+module.exports = { getAllNews, getNew, createNew, updateNew, deleteNew, uploadPhoto };
