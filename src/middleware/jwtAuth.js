@@ -8,12 +8,12 @@ const verifyAdminToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, process.env.SECRET_ADMIN, (err, userId) => {
+  jwt.verify(token, process.env.SECRET_ADMIN, (err, decoded) => {
     if (err) {
       console.log("ERROR WITH TOKEN === ", err);
-      res.sendStatus(403)
+      return res.sendStatus(403)
     };
-    req.body.userId = userId;
+    req.body.id = decoded.id;
     next();
   });
 };
