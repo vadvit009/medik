@@ -62,13 +62,13 @@ module.exports = {
         return res.status(500).json(err);
       }
       console.log("FILES === ", req.files);
-      const arrayWebp = req.files.map(img => {
-        sharp(img.path)
-          .toFormat("webp")
-          .toFile(img.destination + "/" + img.originalname.split(".")[0] + '.webp')
-          .then(ok => console.log(ok))
-      })
-      console.log("ARRAY WEBP === ", arrayWebp);
+      // const arrayWebp = req.files.map(img => {
+      //   sharp(img.path)
+      //     .toFormat("webp")
+      //     .toFile(img.destination + "/" + img.originalname.split(".")[0] + '.webp')
+      //     .then(ok => console.log(ok))
+      // })
+      // console.log("ARRAY WEBP === ", arrayWebp);
       const galleryArray = req.files.map(image => defaultPath + id + '/' + image.originalname);
       console.log("GALLERY ARRAY === ", galleryArray);
 
