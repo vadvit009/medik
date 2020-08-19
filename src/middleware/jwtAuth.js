@@ -9,7 +9,10 @@ const verifyAdminToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET_ADMIN, (err, userId) => {
-    if (err) return res.sendStatus(403);
+    if (err) {
+      console.log("ERROR WITH TOKEN === ", err);
+      res.sendStatus(403)
+    };
     req.body.userId = userId;
     next();
   });
@@ -18,10 +21,6 @@ const verifyAdminToken = (req, res, next) => {
 const verifyUserToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
-
-  // const cookieToken = req.cookie.token;
-  // console.log(cookieToken);
-  
 
   if (!token) {
     return res.sendStatus(401);
