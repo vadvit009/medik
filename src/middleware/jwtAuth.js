@@ -11,6 +11,7 @@ const verifyAdminToken = (req, res, next) => {
   jwt.verify(token, process.env.SECRET_ADMIN, (err, decoded) => {
     if (err) {
       console.log("ERROR WITH TOKEN === ", err);
+      console.log("DECODED === ", decoded);
       return res.sendStatus(403)
     };
     req.body.id = decoded.id;

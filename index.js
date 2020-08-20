@@ -18,7 +18,8 @@ const {
   Orders,
   Upload,
   Attr,
-  Vendor
+  Vendor,
+  Contact
 } = require("./src/routes");
 
 // parse application/x-www-form-urlencoded & application/json
@@ -57,7 +58,8 @@ app.use(
   Orders,
   Upload,
   Attr,
-  Vendor
+  Vendor,
+  Contact
 );
 
 // use static

@@ -6,5 +6,6 @@ const User = require("./user.model");
 const Review = require("./reviews.model");
 const Vendor = require("./vendor.model");
 const Attr = require("./attr.model");
+const Contact = require('./contact.model');
 
-module.exports = { Product, Order, News, Category, User, Review, Vendor, Attr };
+module.exports = { Product, Order, News, Category, User, Review, Vendor, Attr, Contact };

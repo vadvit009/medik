@@ -93,23 +93,19 @@ module.exports = {
                 secure: true,
                 httpOnly: true,
               });
-              res.cookie("_id", user._id);
               res.send({ user, token });
             }
           } else {
             console.log("err 1 ");
-
             res.sendStatus(403);
           }
         } else {
           console.log("err 2 ");
-
           res.sendStatus(403);
         }
       })
       .catch((err) => {
         console.log("Err === ", err);
-
         res.sendStatus(403);
       });
   },
