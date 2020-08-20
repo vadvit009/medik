@@ -40,9 +40,6 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 db();
 
 app.disable("x-powered-by");
@@ -62,6 +59,9 @@ app.use(
   Vendor,
   Contact
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // use static
 app.use(express.static(path.resolve(__dirname, "./build")));
