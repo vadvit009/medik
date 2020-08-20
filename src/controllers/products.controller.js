@@ -1,5 +1,4 @@
 const { Product } = require("../models");
-const { get } = require("mongoose");
 const { ObjectId } = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
@@ -91,7 +90,7 @@ const getAllProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.findById(ObjectId(id))
+  return await Product.findById(id)
     .populate("vendorID", "title -_id")
     .populate({
       path: "categoryID",
@@ -158,7 +157,7 @@ const createProduct = async (req, res) => {
     .catch((err) => res.send({ error: true, errMsg: err }));
 };
 
-const updateProduct = async (req, res) => {
+const updateProduct = (req, res) => {
   const { id } = req.params;
   const {
     title,
@@ -174,7 +173,7 @@ const updateProduct = async (req, res) => {
     article,
     gallery,
   } = req.body;
-  return await Product.findByIdAndUpdate(ObjectId(id), {
+  return Product.findByIdAndUpdate(id, {
     title,
     desc,
     price,
@@ -189,7 +188,16 @@ const updateProduct = async (req, res) => {
     gallery,
     updatedAt: Date.now(),
     deletedAt: null,
-  })
+  }).aggregate([
+    {
+      $lookup: {
+        from: "attr",
+        localField: "attr",
+        foreignField: "name",
+        as: "attr"
+      }
+    }
+  ])
     .then((product) => {
       res.json(product);
     })
@@ -198,20 +206,21 @@ const updateProduct = async (req, res) => {
 
 const restoreProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.findOneAndUpdate(
-    { _id: ObjectId(id) },
+  return await Product.findByIdAndUpdate(id,
     { deletedAt: null }
   )
     .then((product) => {
       res.json(product);
     })
-    .catch((err) => { res.sendStatus(400); console.log("err === ", err) });
+    .catch((err) => {
+      res.sendStatus(400);
+      console.log("err === ", err)
+    });
 };
 
 const softDeleteProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.findOneAndUpdate(
-    { _id: ObjectId(id) },
+  return await Product.findByIdAndUpdate(id,
     { deletedAt: Date.now() }
   )
     .then((product) => {
@@ -222,7 +231,7 @@ const softDeleteProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  return await Product.findByIdAndDelete({ _id: id }).then((product) => {
+  return await Product.findByIdAndDelete(id).then((product) => {
     res.json(product);
   });
 };
