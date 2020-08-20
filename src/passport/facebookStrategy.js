@@ -21,13 +21,14 @@ passport.use(
   },
     function (accessToken, refreshToken, profile, done) {
       console.log("PROFILE === ", profile);
-      const { first_name, last_name, id } = profile._json;
+      const { first_name, last_name, id, emails } = profile._json;
       console.log("ACCESS TOKEN FB === ", accessToken);
       User.findOne({ facebookID: id })
         .then(user => {
           console.log("USER === ", user);
           if (!user) {
             User.create({
+              email: emails[0].value,
               facebookID: id,
               fName: first_name,
               lName: last_name,
