@@ -11,8 +11,6 @@ const {
   logout,
   changePassword,
   restorePassword,
-  loginFb,
-  loginGoogle,
   cbGoogle,
   cbFb
 } = require("../controllers/user.controller");
@@ -27,13 +25,13 @@ app.get("/user", verifyUserToken, getUser);
 
 app.post("/login", login);
 
-app.get("/login/fb", passport.authenticate('facebook', { scope: ['email'] }), loginFb);
+app.get("/login/fb", passport.authenticate('facebook', { scope: ['email'] }));
 
 app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login', session: false }), cbFb);
 
-app.get("/login/google", passport.authenticate('google'), loginGoogle);
+app.get("/login/google", passport.authenticate('google', { scope: ['email'] }));
 
-app.get("/google/cb", passport.authenticate('google'), cbGoogle);
+app.get("/google/cb", passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login', session: false }), cbGoogle);
 
 app.post("/logout", logout);
 

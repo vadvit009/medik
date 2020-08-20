@@ -178,13 +178,6 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  loginFb: (req, res) => {
-    // passport.authenticate('facebook')
-    res.send(req.user)
-  },
-
-  loginGoogle: async (req, res) => { },
-
   cbFb: async (req, res) => {
     const user = req.user;
     console.log("FB USER === ", req.user);
