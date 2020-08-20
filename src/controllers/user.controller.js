@@ -180,7 +180,7 @@ module.exports = {
 
   loginFb: (req, res) => {
     // passport.authenticate('facebook')
-    // res.sendStatus(200)
+    res.send(req.user)
   },
 
   loginGoogle: async (req, res) => { },
