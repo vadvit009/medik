@@ -71,7 +71,7 @@ module.exports = {
           if (user.password === key) {
             if (user.role === true) {
               const token = jwt.sign(
-                { id: user._id },
+                { user: user },
                 process.env.SECRET_ADMIN,
                 {
                   expiresIn: "1h",
