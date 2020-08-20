@@ -27,7 +27,7 @@ app.get("/user", verifyUserToken, getUser);
 
 app.post("/login", login);
 
-app.get("/login/fb", passport.authenticate('facebook'), loginFb);
+app.get("/login/fb", passport.authenticate('facebook', { scope: ['email'] }), loginFb);
 
 app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login', session: false }), cbFb);
 
