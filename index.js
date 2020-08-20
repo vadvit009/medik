@@ -10,6 +10,7 @@ const db = require("./src/db");
 const session = require("express-session");
 const passport = require("passport");
 const passportFBconfig = require('./src/passport/facebookStrategy');
+const passportGoogleConfig = require('./src/passport/googleStrategy');
 const {
   Product,
   User,
