@@ -109,7 +109,6 @@ const getProduct = async (req, res) => {
       select: "title desc rating userID -_id",
       populate: { path: "userID", select: "fName -_id" },
     })
-    .populate("attr", "title")
     .exec((err, prod) => {
       if (err) return res.send(err);
       res.send(prod);
@@ -190,16 +189,6 @@ const updateProduct = (req, res) => {
     updatedAt: Date.now(),
     deletedAt: null,
   })
-  // .aggregate([
-  //   {
-  //     $lookup: {
-  //       from: "attr",
-  //       localField: "attr",
-  //       foreignField: "name",
-  //       as: "attr"
-  //     }
-  //   }
-  // ])
     .then((product) => {
       res.json(product);
     })
