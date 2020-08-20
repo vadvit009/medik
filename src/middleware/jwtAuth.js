@@ -9,12 +9,12 @@ const verifyAdminToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.SECRET_ADMIN, (err, decoded) => {
+    console.log("DECODED === ", decoded);
     if (err) {
       console.log("ERROR WITH TOKEN === ", err);
       return res.sendStatus(403)
     };
-    console.log("DECODED === ", decoded);
-    req.body.id = decoded.id;
+    req.body.id = decoded.user._id;
     next();
   });
 };
