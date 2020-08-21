@@ -181,12 +181,8 @@ module.exports = {
   cbFb: async (req, res) => {
     const user = req.user;
     console.log("FB USER === ", req.user);
-    const payload = {
-      id: user._id,
-      email: user.email,
-    };
 
-    jwt.sign(payload, secret, { expiresIn: 3600 }, (err, token) => {
+    jwt.sign({ id: user._id, }, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
       if (err) {
         res.status(500).send({
           error: 'Error signing token',
@@ -194,6 +190,7 @@ module.exports = {
         });
       }
       res.send(token);
+      console.log('TOKEN FORM FB === ',token);
     });
   },
 
