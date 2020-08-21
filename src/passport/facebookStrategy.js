@@ -19,11 +19,11 @@ passport.use(
     callbackURL: 'https://medtechnika.te.ua/api/v1/fb/cb',
     profileFields: ['name', 'email']
   },
-    function (accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       console.log("PROFILE === ", profile);
       const { first_name, last_name, id, email } = profile._json;
       console.log("ACCESS TOKEN FB === ", accessToken);
-      User.findOne({ facebookID: id })
+      await User.findOne({ facebookID: id })
         .then(user => {
           console.log("USER === ", user);
           if (!user) {

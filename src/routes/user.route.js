@@ -27,7 +27,7 @@ app.post("/login", login);
 
 app.get("/login/fb", passport.authenticate('facebook', { scope: ['email'] }));
 
-app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login', session: false }), cbFb);
+app.get("/fb/cb", passport.authenticate('facebook', { failureRedirect: '/login', session: false }), cbFb);
 
 app.get("/login/google", passport.authenticate('google', { scope: ['email'] }));
 
