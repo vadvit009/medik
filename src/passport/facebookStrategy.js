@@ -34,19 +34,14 @@ passport.use(
               lName: last_name,
               role: false
             })
-              .then(fbUser => res.send(fbUser))
+              .then(fbUser => fbUser)
               .catch(err => {
                 console.log(err);
-                res.sendStatus(409)
               })
-          }
-          else {
-            res.sendStatus(200)
           }
         })
         .catch(err => {
           console.log(err);
-          res.sendStatus(409)
         })
       done(null, profile);
     }

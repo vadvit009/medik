@@ -2,6 +2,7 @@ const { Contact } = require("../models");
 
 const getAllContactUs = (req, res) => {
   return Contact.find({})
+    .sort({ read: -1 })
     .then((ContactUs) => res.send(ContactUs));
 };
 

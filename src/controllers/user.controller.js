@@ -189,8 +189,8 @@ module.exports = {
           raw: err,
         });
       }
-      res.send(token);
       console.log('TOKEN FORM FB === ',token);
+      res.send(token);
     });
   },
 
