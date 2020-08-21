@@ -88,7 +88,7 @@ module.exports = {
           role: false,
         })
           .then((user) => {
-            const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
+            const token = jwt.sign({ id: user._id }, process.env.SECRET, {
               expiresIn: "1h",
             });
             res.send({ token, user });
@@ -178,20 +178,28 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  cbFb: async (req, res) => {
+  cbFb: (req, res) => {
+    console.log(("HERE === "));
     const user = req.user;
     console.log("FB USER === ", req.user);
 
-    jwt.sign({ id: user._id, }, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
-      if (err) {
-        res.status(500).send({
-          error: 'Error signing token',
-          raw: err,
-        });
-      }
-      console.log('TOKEN FORM FB === ',token);
-      res.send(token);
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.SECRET, {
+      expiresIn: "1h",
     });
+    res.send(token);
+
+    // jwt.sign({ id: user._id, }, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
+    //   if (err) {
+    //     res.status(500).send({
+    //       error: 'Error signing token',
+    //       raw: err,
+    //     });
+    //   }
+    //   console.log('TOKEN FORM FB === ',token);
+    //   res.send(token);
+    // });
   },
 
   cbGoogle: async (req, res) => { }
