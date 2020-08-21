@@ -188,18 +188,17 @@ module.exports = {
       expiresIn: "1h",
     });
     res.send({ token: token });
-
-    // jwt.sign({ id: user._id, }, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
-    //   if (err) {
-    //     res.status(500).send({
-    //       error: 'Error signing token',
-    //       raw: err,
-    //     });
-    //   }
-    //   console.log('TOKEN FORM FB === ',token);
-    //   res.send(token);
-    // });
   },
 
-  cbGoogle: async (req, res) => { }
+  cbGoogle: async (req, res) => {
+    const user = req.user;
+    console.log("GOOGLE USER === ", req.user);
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.SECRET, {
+      expiresIn: "1h",
+    });
+    res.send({ token: token });
+  }
 };
