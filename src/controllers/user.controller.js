@@ -179,7 +179,7 @@ module.exports = {
   },
 
   cbFb: (req, res) => {
-    console.log("HERE === ",req);
+    console.log("HERE === ", req);
     const user = req.user;
     console.log("FB USER === ", req.user);
 
@@ -188,7 +188,7 @@ module.exports = {
       process.env.SECRET, {
       expiresIn: "1h",
     });
-    res.send(token);
+    res.send({ token: token });
 
     // jwt.sign({ id: user._id, }, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
     //   if (err) {
