@@ -22,10 +22,8 @@ passport.use(
     function (accessToken, refreshToken, profile, done) {
       console.log("PROFILE === ", profile);
       const { first_name, last_name, id, email } = profile._json;
-      console.log("ACCESS TOKEN G === ", accessToken);
       User.findOne({ googleID: id })
         .then(user => {
-          console.log("USER === ", user);
           if (!user) {
             User.create({
               email: email,
@@ -34,16 +32,16 @@ passport.use(
               lName: last_name,
               role: false
             })
-              .then(fbUser => console.log(fbUser))
+              .then(fbUser => done(null, fbUser))
               .catch(err => {
                 console.log(err);
               })
           }
+          done(null, user);
         })
         .catch(err => {
           console.log(err);
         })
-      done(null, profile);
     }
   )
 )
