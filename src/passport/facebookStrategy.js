@@ -34,7 +34,7 @@ passport.use(
               lName: last_name,
               role: false
             })
-              .then(fbUser => fbUser)
+              .then(fbUser => done(null, fbUser))
               .catch(err => {
                 console.log(err);
               })
