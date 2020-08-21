@@ -39,11 +39,11 @@ passport.use(
                 console.log(err);
               })
           }
+          done(null, user);
         })
         .catch(err => {
           console.log(err);
         })
-      done(null, user);
     }
   )
 )
