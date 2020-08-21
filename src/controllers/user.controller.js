@@ -179,7 +179,6 @@ module.exports = {
   },
 
   cbFb: (req, res) => {
-    console.log("HERE === ", req);
     const user = req.user;
     console.log("FB USER === ", req.user);
 
