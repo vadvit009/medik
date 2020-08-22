@@ -61,9 +61,10 @@ const getAllProducts = async (req, res) => {
 
   if (search) {
     Product.aggregate([
-      {
-        $text: { $search: search }
-      },
+      // {
+      //   $text:
+      { $search: search },
+      // },
       {
         $lookup: {
           from: "category",
