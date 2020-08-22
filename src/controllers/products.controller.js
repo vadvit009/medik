@@ -75,9 +75,9 @@ const getAllProducts = async (req, res) => {
         },
       },
     ])
-      // .skip(page > 1 ? (page - 1) * 24 : 0)
-      // .limit(page ? page * 24 : 24)
-      // .sort(sortBy())
+      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .limit(page ? page * 24 : 24)
+      .sort(sortBy())
       .then((products) => {
         res.send({ products, length });
       })
@@ -273,6 +273,7 @@ const getProductHighScore = (req, res) => {
 
 const getProductByArrayOfIds = (req, res) => {
   const { productsArray } = req.params;
+  console.log("productsArray === ", productsArray);
   const productsArrayObjectIds = (productsArray && productsArray.split(",").map(product => ObjectId(product))) || [];
 
   return Product.find({
