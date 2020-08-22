@@ -60,7 +60,6 @@ const getAllProducts = async (req, res) => {
   };
 
   if (search) {
-    console.log("SEARCH_ARRAY === ", [search]);
     Product.aggregate([
       {
         $match: {
