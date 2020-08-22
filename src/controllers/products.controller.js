@@ -249,6 +249,21 @@ const getProductHighScore = (req, res) => {
       res.sendStatus(400)
     }
     )
+};
+
+const getProductByArrayOfIds = (req, res) => {
+  const { productsArray } = req.params;
+  const productsArrayObjectIds = (productsArray && productsArray.split(",").map(product => ObjectId(product))) || [];
+
+  return Product.find({
+    _id: {
+      $in: productsArrayObjectIds
+    }
+  }).then(products => res.send(products))
+    .catch(err => {
+      console.log("ERROR WHEN GET_PRODUCTS_BY_ID === ", err);
+      res.sendStatus(400)
+    })
 }
 
 module.exports = {
@@ -260,4 +275,5 @@ module.exports = {
   softDeleteProduct,
   restoreProduct,
   updateProduct,
+  getProductByArrayOfIds
 };

@@ -8,6 +8,7 @@ const {
   softDeleteProduct,
   getProductHighScore,
   deleteProduct,
+  getProductByArrayOfIds
 } = require("../controllers/products.controller");
 
 const { verifyAdminToken } = require("../middleware/jwtAuth");
@@ -17,6 +18,8 @@ app.get("/products", getAllProducts);
 app.post("/product", verifyAdminToken, createProduct);
 
 app.get("/product/:id", getProduct);
+
+app.get("/exact", getProductByArrayOfIds);
 
 app.get("/products/highRating", getProductHighScore);
 
