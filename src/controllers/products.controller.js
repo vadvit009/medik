@@ -64,12 +64,11 @@ const getAllProducts = async (req, res) => {
     Product.aggregate([
       {
         $match: {
-          title: { $in: [search] }
-          // $text: {
-          //   $search: search,
-          //   $caseSensitive: false,
-          //   $diacriticSensitive: false
-          // },
+          $text: {
+            $search: search,
+            $caseSensitive: true,
+            $diacriticSensitive: true
+          },
         }
       },
       {
