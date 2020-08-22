@@ -67,6 +67,9 @@ const getAllProducts = async (req, res) => {
         },
       },
       {
+        $text: { $search: search }
+      },
+      {
         $sort: sortBy(),
       },
     ])
@@ -74,16 +77,17 @@ const getAllProducts = async (req, res) => {
       .limit(page ? page * 24 : 24)
       .sort(sortBy())
       .then((products) => {
-        search
-          ? res.send(
-            products.filter((product) =>
-              product.title.toLowerCase().includes(search.toLowerCase()) ||
-                product.desc.toLowerCase().includes(search.toLowerCase())
-                ? product
-                : null
-            )
-          )
-          : res.send({ products, length });
+        // search
+        //   ? res.send(
+        //     products.filter((product) =>
+        //       product.title.toLowerCase().includes(search.toLowerCase()) ||
+        //         product.desc.toLowerCase().includes(search.toLowerCase())
+        //         ? product
+        //         : null
+        //     )
+        //   )
+        // :
+        res.send({ products, length });
       })
       .catch((err) => console.log(err));
 };
