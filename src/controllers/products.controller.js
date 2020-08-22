@@ -47,9 +47,9 @@ const getAllProducts = async (req, res) => {
         },
       },
     ])
+      .sort(sortBy())
       .skip(page > 1 ? (page - 1) * 24 : 0)
       .limit(page ? page * 24 : 24)
-      .sort(sortBy())
       .exec((err, products) => {
         if (err) {
           res.sendStatus(400);
@@ -80,9 +80,9 @@ const getAllProducts = async (req, res) => {
         },
       },
     ])
+      .sort(sortBy())
       .skip(page > 1 ? (page - 1) * 24 : 0)
       .limit(page ? page * 24 : 24)
-      .sort(sortBy())
       .then((products) => {
         res.send({ products, length });
       })
@@ -100,9 +100,10 @@ const getAllProducts = async (req, res) => {
           as: "categories",
         },
       }
-    ]).skip(page > 1 ? (page - 1) * 24 : 0)
-      .limit(page ? page * 24 : 24)
+    ])
       .sort(sortBy())
+      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .limit(page ? page * 24 : 24)
       .then((products) => {
         res.send({ products, length });
       })
