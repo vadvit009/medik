@@ -17,8 +17,8 @@ const getAllProducts = async (req, res) => {
 
   const length = await Product.countDocuments().then((length) => length);
 
-  category
-    ? await Product.aggregate([
+  if (category) {
+    Product.aggregate([
       {
         $lookup: {
           from: "category",
@@ -57,7 +57,10 @@ const getAllProducts = async (req, res) => {
         }
         res.send({ products, length });
       })
-    : await Product.aggregate([
+  };
+
+  if (search) {
+    Product.aggregate([
       {
         $text: { $search: search }
       },
@@ -69,30 +72,38 @@ const getAllProducts = async (req, res) => {
           as: "categories",
         },
       },
-      // {
-      //   $sort: sortBy(),
-      // },
     ])
-      .skip(page > 1 ? (page - 1) * 24 : 0)
-      .limit(page ? page * 24 : 24)
-      .sort(sortBy())
+      // .skip(page > 1 ? (page - 1) * 24 : 0)
+      // .limit(page ? page * 24 : 24)
+      // .sort(sortBy())
       .then((products) => {
-        // search
-        //   ? res.send(
-        //     products.filter((product) =>
-        //       product.title.toLowerCase().includes(search.toLowerCase()) ||
-        //         product.desc.toLowerCase().includes(search.toLowerCase())
-        //         ? product
-        //         : null
-        //     )
-        //   )
-        // :
         res.send({ products, length });
       })
       .catch((err) => {
         console.log(err)
         res.sendStatus(400);
       });
+  } else {
+    Product.aggregate([
+      {
+        $lookup: {
+          from: "category",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "categories",
+        },
+      }
+    ]).skip(page > 1 ? (page - 1) * 24 : 0)
+      .limit(page ? page * 24 : 24)
+      .sort(sortBy())
+      .then((products) => {
+        res.send({ products, length });
+      })
+      .catch((err) => {
+        console.log(err)
+        res.sendStatus(400);
+      });
+  }
 };
 
 const getProduct = async (req, res) => {
