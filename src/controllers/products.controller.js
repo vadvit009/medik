@@ -66,8 +66,6 @@ const getAllProducts = async (req, res) => {
         $match: {
           $text: {
             $search: search,
-            $caseSensitive: true,
-            $diacriticSensitive: true
           },
         }
       },
