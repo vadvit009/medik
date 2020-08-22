@@ -272,7 +272,7 @@ const getProductHighScore = (req, res) => {
 };
 
 const getProductByArrayOfIds = (req, res) => {
-  const { productsArray } = req.params;
+  const { productsArray } = req.query;
   console.log("productsArray === ", productsArray);
   const productsArrayObjectIds = (productsArray && productsArray.split(",").map(product => ObjectId(product))) || [];
 
