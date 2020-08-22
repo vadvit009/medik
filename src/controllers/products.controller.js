@@ -59,15 +59,15 @@ const getAllProducts = async (req, res) => {
       })
     : await Product.aggregate([
       {
+        $text: { $search: search }
+      },
+      {
         $lookup: {
           from: "category",
           localField: "categoryID",
           foreignField: "_id",
           as: "categories",
         },
-      },
-      {
-        $text: { $search: search }
       },
       {
         $sort: sortBy(),
