@@ -63,7 +63,10 @@ const getAllProducts = async (req, res) => {
     Product.aggregate([
       {
         $match: {
-          $text: { $search: search },
+          $text: {
+            $search: search,
+            $caseSensitive: true
+          },
         }
       },
       {
@@ -273,7 +276,6 @@ const getProductHighScore = (req, res) => {
 
 const getProductByArrayOfIds = (req, res) => {
   const { productsArray } = req.query;
-  console.log("productsArray === ", productsArray);
   const productsArrayObjectIds = (productsArray && productsArray.split(",").map(product => ObjectId(product))) || [];
 
   return Product.find({
