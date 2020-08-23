@@ -109,7 +109,7 @@ const deleteOrder = async(req, res) => {
 };
 
 const userOrderHistory = (req, res) => {
-    const { id } = req.params;
+    const { id } = req.body;
     Order.find({ userID: id })
         .exec((err, orders) => {
             if (err) {

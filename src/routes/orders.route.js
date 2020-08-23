@@ -1,19 +1,19 @@
 const app = require("express").Router();
 
 const {
-  getAllOrders,
-  getOrder,
-  createOrder,
-  deleteOrder,
-  updateOrder,
-  userOrderHistory
+    getAllOrders,
+    getOrder,
+    createOrder,
+    deleteOrder,
+    updateOrder,
+    userOrderHistory
 } = require("../controllers/orders.controller");
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/orders", verifyAdminToken, getAllOrders);
 
-app.get("/order/history/:id", verifyUserToken, userOrderHistory);
+app.get("/order/history", verifyUserToken, userOrderHistory);
 
 app.get("/order/:id", verifyUserToken, getOrder);
 
