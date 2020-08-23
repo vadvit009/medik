@@ -1,4 +1,4 @@
-const { Review } = require("../models");
+const { Review, Product } = require("../models");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const getAllReviews = async (req, res) => {
@@ -88,6 +88,16 @@ const createReview = async (req, res) => {
     deletedAt: null,
   })
     .then((review) => {
+      Product.findByIdAndUpdate(productID, {
+        $push: {
+          reviews: review._id
+        }
+      })
+        .then(productReview => console.log("productReview === ", productReview))
+        .catch(err => {
+          console.log("ERR WHEN PUSH REVIEWS TO PRODUCT", err);
+          return res.sendStatus(400)
+        })
       res.json(review);
     })
     .catch((err) => {
