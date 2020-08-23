@@ -4,14 +4,12 @@ const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
 const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
 const { User, Product } = require("../models");
-const sharp = require('sharp');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (!fs.existsSync(folderPath + "/" + req.params.id)) {
       fs.mkdirSync(folderPath + "/" + req.params.id);
     }
-    console.log("FolderSTATs ==", fs.readdirSync(folderPath + "/" + req.params.id));
     cb(null, folderPath + "/" + req.params.id);
   },
   filename: function (req, file, cb) {
@@ -40,13 +38,23 @@ const userUpload = multer({ storage: userStorage });
 
 module.exports = {
   mainImgUpload: (req, res) => {
-    upload.single("file")(req, res, function (err) {
+    const { id } = req.params;
+    const defaultPath = "https://medtechnika.te.ua/assets/products/";
+
+    upload.single("thumbnail")(req, res, function (err) {
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
         return res.status(500).json(err);
       }
-      return res.status(200).send(req.file);
+      // return res.status(200).send(req.file);
+      const smallImg = defaultPath + id + '/' + req.file.originalname;
+      Product.findByIdAndUpdate(id, { thumbnail: smallImg })
+        .then(thumbnail => res.send(thumbnail))
+        .catch(err => {
+          console.log("ERROR WHEN UPDATE === ", err);
+          return res.sendStatus(400)
+        })
     });
   },
 

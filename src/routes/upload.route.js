@@ -1,12 +1,13 @@
 const app = require("express").Router();
 const {
   mainImgUpload,
-  galleryUpload, userUpload
+  galleryUpload, 
+  userUpload
 } = require("../controllers/upload.controller");
 
 const { verifyAdminToken, verifyUserToken } = require("../middleware/jwtAuth");
 
-app.post("/product/:id/upload", verifyAdminToken, mainImgUpload);
+app.post("/product/:id/thumbnail", verifyAdminToken, mainImgUpload);
 
 app.post("/product/:id/gallery", verifyAdminToken, galleryUpload);
 

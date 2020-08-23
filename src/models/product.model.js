@@ -16,6 +16,7 @@ const Product = new Schema({
   quantity: Number,
   article: String,
   gallery: Array,
+  thumbnail: String,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date,
