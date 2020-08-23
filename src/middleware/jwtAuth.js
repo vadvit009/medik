@@ -41,7 +41,7 @@ const verifyUserToken = (req, res, next) => {
     const cookieToken = req.cookies.token;
     console.log("Cookie token === ", cookieToken);
 
-    if (!cookieAtoken) {
+    if (!cookieToken) {
         return res.sendStatus(401);
     }
 
