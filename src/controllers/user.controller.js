@@ -179,8 +179,8 @@ module.exports = {
   },
 
   cbFb: (req, res) => {
-    const user = req.user;
-    console.log("FB USER === ", req.user);
+    const { user } = req;
+    console.log("FB USER === ", user);
 
     const token = jwt.sign(
       { id: user._id },
@@ -191,8 +191,8 @@ module.exports = {
   },
 
   cbGoogle: async (req, res) => {
-    const user = req.user;
-    console.log("GOOGLE USER === ", req.user);
+    const { user } = req;
+    console.log("GOOGLE USER === ", user);
 
     const token = jwt.sign(
       { id: user._id },
