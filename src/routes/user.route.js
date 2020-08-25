@@ -27,11 +27,11 @@ app.post("/login", login);
 
 app.get("/login/fb", passport.authenticate('facebook', { scope: ['email'] }));
 
-app.get("/fb/cb", passport.authenticate('facebook', { failureRedirect: '/login', session: false }), cbFb);
+app.get("/fb/cb", passport.authenticate('facebook', { successRedirect: "/profile", failureRedirect: '/login', session: false }), cbFb);
 
 app.get("/login/google", passport.authenticate('google', { scope: ['email'] }));
 
-app.get("/google/cb", passport.authenticate('google', { failureRedirect: '/login', session: false }), cbGoogle);
+app.get("/google/cb", passport.authenticate('google', { successRedirect: "/profile", failureRedirect: '/login', session: false }), cbGoogle);
 
 app.post("/logout", logout);
 
