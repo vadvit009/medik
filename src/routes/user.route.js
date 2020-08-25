@@ -19,11 +19,9 @@ const passport = require('passport');
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
-const { cache } = require('../cache/cache.util');
-
 app.get("/users", verifyAdminToken, getAllUsers);
 
-app.get("/user", cache(3600), verifyUserToken, getUser);
+app.get("/user", verifyUserToken, getUser);
 
 app.post("/login", login);
 
