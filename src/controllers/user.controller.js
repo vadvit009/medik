@@ -5,13 +5,13 @@ const { restorePassword } = require("../mailer");
 const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
-    getAllUsers: async(req, res) => {
+    getAllUsers: async (req, res) => {
         return await User.find({})
             .then((users) => res.json(users))
             .catch((err) => console.log(err));
     },
 
-    getUser: async(req, res) => {
+    getUser: async (req, res) => {
         const { id } = req.body;
         return await User.findById(id)
             .then((user) => {
@@ -30,8 +30,8 @@ module.exports = {
                         if (user.role === true) {
                             const token = jwt.sign({ user: user },
                                 process.env.SECRET_ADMIN, {
-                                    expiresIn: "1h",
-                                }
+                                expiresIn: "1h",
+                            }
                             );
                             res.cookie("aToken", token, {
                                 expires: new Date(Date.now() + 90000000),
@@ -66,25 +66,25 @@ module.exports = {
             });
     },
 
-    logout: async(req, res) => {
+    logout: async (req, res) => {
         res.header("authorization", null);
         res.send("logout");
     },
 
-    register: async(req, res) => {
+    register: async (req, res) => {
         const { fName, lName, fatherName, phone, email, password } = req.body;
         const key = crypto.createHash("md5").update(password).digest("hex");
         return await User.findOne({ email: email }).then((user) => {
             if (!user) {
                 User.create({
-                        fName,
-                        lName,
-                        fatherName,
-                        phone,
-                        email,
-                        password: key,
-                        role: false,
-                    })
+                    fName,
+                    lName,
+                    fatherName,
+                    phone,
+                    email,
+                    password: key,
+                    role: false,
+                })
                     .then((user) => {
                         const token = jwt.sign({ id: user._id }, process.env.SECRET, {
                             expiresIn: "1h",
@@ -101,17 +101,17 @@ module.exports = {
         });
     },
 
-    updateUser: async(req, res) => {
+    updateUser: async (req, res) => {
         const { id, fName, lName, phone, email, fatherName, gallery } = req.body;
         return await User.findByIdAndUpdate(
             id, {
-                fName,
-                lName,
-                phone,
-                email,
-                fatherName,
-                gallery,
-            },
+            fName,
+            lName,
+            phone,
+            email,
+            fatherName,
+            gallery,
+        },
             (err, user) => {
                 if (err) return res.sendStatus(400);
                 console.log(user);
@@ -122,7 +122,7 @@ module.exports = {
         // .catch((err) => err && res.sendStatus(409));
     },
 
-    restorePassword: async(req, res) => {
+    restorePassword: async (req, res) => {
         const { email } = req.body;
         return await User.findOne({ email: email })
             .then((user) => {
@@ -137,7 +137,7 @@ module.exports = {
             .catch((err) => err && res.sendStatus(409));
     },
 
-    changePassword: async(req, res) => {
+    changePassword: async (req, res) => {
         const { email, password } = req.body;
         const key = crypto.createHash("md5").update(password).digest("hex");
         return await User.findOne({ email: email }, { password: key })
@@ -148,21 +148,21 @@ module.exports = {
             .catch((err) => res.send(err));
     },
 
-    restoreUser: async(req, res) => {
+    restoreUser: async (req, res) => {
         const { id } = req.params;
         return await User.findByIdAndUpdate({ _id: ObjectId(id) }, { deletedAt: null })
             .then((user) => res.json(user))
             .catch((err) => res.send(err));
     },
 
-    softDeleteUser: async(req, res) => {
+    softDeleteUser: async (req, res) => {
         const { id } = req.params;
         return await User.findByIdAndUpdate({ _id: ObjectId(id) }, { deletedAt: Date.now() })
             .then((user) => res.json(user))
             .catch((err) => res.send(err));
     },
 
-    deleteUser: async(req, res) => {
+    deleteUser: async (req, res) => {
         const { id } = req.params;
         return await User.findByIdAndRemove({ _id: ObjectId(id) })
             .then((user) => res.json(user))
@@ -175,8 +175,8 @@ module.exports = {
 
         const token = jwt.sign({ id: user._id },
             process.env.SECRET, {
-                expiresIn: "1h",
-            });
+            expiresIn: "1h",
+        });
         console.log("FB TOKEN === ", token);
 
         res.cookie("token", token, {
@@ -184,18 +184,19 @@ module.exports = {
             secure: true,
             httpOnly: true,
         });
-        res.redirect("/user", { token })
-            // res.send({ token, user });
+
+        res.redirect("/user");
+        // res.send({ token, user });
     },
 
-    cbGoogle: async(req, res) => {
+    cbGoogle: async (req, res) => {
         const { user } = req;
         console.log("GOOGLE USER === ", user);
 
         const token = jwt.sign({ id: user._id },
             process.env.SECRET, {
-                expiresIn: "1h",
-            });
+            expiresIn: "1h",
+        });
         console.log("GOOGLE TOKEN === ", token);
 
         res.cookie("token", token, {
@@ -203,6 +204,8 @@ module.exports = {
             secure: true,
             httpOnly: true,
         });
-        res.send({ token, user });
+
+        res.redirect("/user");
+        // res.send({ token, user });
     }
 };
