@@ -65,9 +65,9 @@ const getAllProducts = async (req, res) => {
         $match: {
           // $or: [
           //   {
-              title: {
-                $regex: `/${search}$/`
-              }
+          title: {
+            $regex: search
+          }
           //   },
           //   {
           //     $text: {
