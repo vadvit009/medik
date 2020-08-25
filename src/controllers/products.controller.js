@@ -63,18 +63,9 @@ const getAllProducts = async (req, res) => {
     Product.aggregate([
       {
         $match: {
-          // $or: [
-          //   {
           title: {
             $regex: search
           }
-          //   },
-          //   {
-          //     $text: {
-          //       $search: search,
-          //     }
-          //   }
-          // ]
         }
       },
       {
