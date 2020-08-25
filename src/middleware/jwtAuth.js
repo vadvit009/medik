@@ -70,7 +70,19 @@ const verifyUserToken = (req, res, next) => {
     // });
 };
 
+const tokenSwitcher = (req) => {
+    const { token, aToken } = req.cookies;
+
+    if (token) {
+        return verifyUserToken
+    }
+    if (aToken) {
+        return verifyAdminToken
+    }
+};
+
 module.exports = {
     verifyAdminToken,
     verifyUserToken,
+    tokenSwitcher
 };
