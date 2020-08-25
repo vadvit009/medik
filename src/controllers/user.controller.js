@@ -177,12 +177,15 @@ module.exports = {
             process.env.SECRET, {
                 expiresIn: "1h",
             });
+        console.log("FB TOKEN === ", token);
+
         res.cookie("token", token, {
             expires: new Date(Date.now() + 90000000),
             secure: true,
             httpOnly: true,
         });
-        res.send({ token, user });
+        res.redirect("/user", { token })
+            // res.send({ token, user });
     },
 
     cbGoogle: async(req, res) => {
@@ -193,6 +196,8 @@ module.exports = {
             process.env.SECRET, {
                 expiresIn: "1h",
             });
+        console.log("GOOGLE TOKEN === ", token);
+
         res.cookie("token", token, {
             expires: new Date(Date.now() + 90000000),
             secure: true,
