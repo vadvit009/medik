@@ -177,6 +177,11 @@ module.exports = {
             process.env.SECRET, {
                 expiresIn: "1h",
             });
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 90000000),
+            secure: true,
+            httpOnly: true,
+        });
         res.send({ token, user });
     },
 
@@ -188,6 +193,11 @@ module.exports = {
             process.env.SECRET, {
                 expiresIn: "1h",
             });
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 90000000),
+            secure: true,
+            httpOnly: true,
+        });
         res.send({ token, user });
     }
 };
