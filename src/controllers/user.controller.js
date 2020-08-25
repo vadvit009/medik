@@ -185,7 +185,7 @@ module.exports = {
             httpOnly: true,
         });
 
-        res.redirect("/user");
+        res.redirect("/profile");
         // res.send({ token, user });
     },
 
