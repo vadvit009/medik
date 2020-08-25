@@ -1,17 +1,19 @@
 const app = require("express").Router();
 
 const {
-  getAllNews,
-  getNew,
-  createNew,
-  deleteNew,
-  uploadPhoto,
-  updateNew
+    getAllNews,
+    getNew,
+    createNew,
+    deleteNew,
+    uploadPhoto,
+    updateNew
 } = require("../controllers/news.controller");
 
 const { verifyAdminToken } = require("../middleware/jwtAuth");
 
-app.get("/news", getAllNews);
+const { cache } = require('../cache/cache.util');
+
+app.get("/news", cache(3600), getAllNews);
 
 app.get("/new/:id", getNew);
 

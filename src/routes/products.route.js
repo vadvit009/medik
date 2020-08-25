@@ -21,7 +21,7 @@ app.post("/product", verifyAdminToken, createProduct);
 
 app.get("/product/:id", cache(3600), getProduct);
 
-app.get("/exact", getProductByArrayOfIds);
+app.get("/exact", cache(3600), getProductByArrayOfIds);
 
 app.get("/products/highRating", cache(3600), getProductHighScore);
 
