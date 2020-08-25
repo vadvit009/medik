@@ -1,27 +1,29 @@
 const app = require("express").Router();
 const {
-  getAllUsers,
-  getUser,
-  login,
-  register,
-  updateUser,
-  deleteUser,
-  restoreUser,
-  softDeleteUser,
-  logout,
-  changePassword,
-  restorePassword,
-  cbGoogle,
-  cbFb
+    getAllUsers,
+    getUser,
+    login,
+    register,
+    updateUser,
+    deleteUser,
+    restoreUser,
+    softDeleteUser,
+    logout,
+    changePassword,
+    restorePassword,
+    cbGoogle,
+    cbFb
 } = require("../controllers/user.controller");
 
 const passport = require('passport');
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
+const { cache } = require('../cache/cache.util');
+
 app.get("/users", verifyAdminToken, getAllUsers);
 
-app.get("/user", verifyUserToken, getUser);
+app.get("/user", cache(3600), verifyUserToken, getUser);
 
 app.post("/login", login);
 

@@ -1,27 +1,29 @@
 const app = require("express").Router();
 const {
-  getAllProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  restoreProduct,
-  softDeleteProduct,
-  getProductHighScore,
-  deleteProduct,
-  getProductByArrayOfIds
+    getAllProducts,
+    getProduct,
+    createProduct,
+    updateProduct,
+    restoreProduct,
+    softDeleteProduct,
+    getProductHighScore,
+    deleteProduct,
+    getProductByArrayOfIds
 } = require("../controllers/products.controller");
+
+const { cache } = require('../cache/cache.util');
 
 const { verifyAdminToken } = require("../middleware/jwtAuth");
 
-app.get("/products", getAllProducts);
+app.get("/products", cache(3600), getAllProducts);
 
 app.post("/product", verifyAdminToken, createProduct);
 
-app.get("/product/:id", getProduct);
+app.get("/product/:id", cache(3600), getProduct);
 
 app.get("/exact", getProductByArrayOfIds);
 
-app.get("/products/highRating", getProductHighScore);
+app.get("/products/highRating", cache(3600), getProductHighScore);
 
 app.patch("/product/:id", verifyAdminToken, updateProduct);
 
