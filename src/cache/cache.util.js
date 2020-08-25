@@ -1,5 +1,5 @@
 const Memcached = require('memcached');
-const memcached = new Memcached('127.0.0.1:11211', { timeout: 200, maxTimeout: 200, failures: 1 });
+const memcached = new Memcached('127.0.0.1:11211', { timeout: 200, maxTimeout: 200, minTimeout: 20, failures: 1 });
 
 const cache = (duration) => {
     return (req, res, next) => {
