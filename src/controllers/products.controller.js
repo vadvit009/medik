@@ -19,7 +19,7 @@ const getAllProducts = async (req, res) => {
     return 0;
   }
 
-  console.warn("SKIPNUMBER === ", skipNumber);
+  console.warn("SKIPNUMBER === ", skipNumber());
 
   const categoryArrayObjectIds =
     (category && category.split(",").map((id) => ObjectId(id))) || [];
@@ -57,7 +57,7 @@ const getAllProducts = async (req, res) => {
       },
     ])
       .sort(sortBy())
-      .skip(skipNumber)
+      .skip(skipNumber())
       .limit(page ? page * 24 : 24)
       .exec((err, products) => {
         if (err) {
@@ -87,7 +87,7 @@ const getAllProducts = async (req, res) => {
       },
     ])
       .sort(sortBy())
-      .skip(skipNumber)
+      .skip(skipNumber())
       .limit(page ? page * 24 : 24)
       .then((products) => {
         res.send({ products, length });
@@ -108,7 +108,7 @@ const getAllProducts = async (req, res) => {
       }
     ])
       .sort(sortBy())
-      .skip(skipNumber)
+      .skip(skipNumber())
       .limit(page ? page * 24 : 24)
       .then((products) => {
         res.send({ products, length });
