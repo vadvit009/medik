@@ -12,6 +12,15 @@ const getAllProducts = async (req, res) => {
   console.log("SEARCH === " + search + " PAGE === " + page);
   console.log("CATEGORY === " + category);
 
+  const skipNumber = () => {
+    if (page) {
+      return (page - 1) * 24;
+    }
+    return 0;
+  }
+
+  console.warn("SKIPNUMBER === ", skipNumber);
+
   const categoryArrayObjectIds =
     (category && category.split(",").map((id) => ObjectId(id))) || [];
 
@@ -48,7 +57,7 @@ const getAllProducts = async (req, res) => {
       },
     ])
       .sort(sortBy())
-      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .skip(skipNumber)
       .limit(page ? page * 24 : 24)
       .exec((err, products) => {
         if (err) {
@@ -78,7 +87,7 @@ const getAllProducts = async (req, res) => {
       },
     ])
       .sort(sortBy())
-      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .skip(skipNumber)
       .limit(page ? page * 24 : 24)
       .then((products) => {
         res.send({ products, length });
@@ -99,7 +108,7 @@ const getAllProducts = async (req, res) => {
       }
     ])
       .sort(sortBy())
-      .skip(page > 1 ? (page - 1) * 24 : 0)
+      .skip(skipNumber)
       .limit(page ? page * 24 : 24)
       .then((products) => {
         res.send({ products, length });
