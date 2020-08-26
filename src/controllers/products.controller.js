@@ -14,7 +14,7 @@ const getAllProducts = async (req, res) => {
 
   const skipNumber = () => {
     if (page) {
-      return (page - 1) * 24;
+      return 24 * (page - 1);
     }
     return 0;
   }
@@ -58,7 +58,7 @@ const getAllProducts = async (req, res) => {
     ])
       .sort(sortBy())
       .skip(skipNumber())
-      .limit(page ? page * 24 : 24)
+      .limit(24)
       .exec((err, products) => {
         if (err) {
           res.sendStatus(400);
@@ -88,7 +88,7 @@ const getAllProducts = async (req, res) => {
     ])
       .sort(sortBy())
       .skip(skipNumber())
-      .limit(page ? page * 24 : 24)
+      .limit(24)
       .then((products) => {
         res.send({ products, length });
       })
@@ -109,7 +109,7 @@ const getAllProducts = async (req, res) => {
     ])
       .sort(sortBy())
       .skip(skipNumber())
-      .limit(page ? page * 24 : 24)
+      .limit(24)
       .then((products) => {
         res.send({ products, length });
       })
