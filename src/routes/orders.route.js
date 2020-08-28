@@ -13,7 +13,7 @@ const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
 app.get("/orders", /*verifyAdminToken,*/ getAllOrders);
 
-app.get("/order/history", verifyUserToken, userOrderHistory);
+app.get("/order/history", /*verifyUserToken,*/ userOrderHistory);
 
 app.get("/order/:id", /*verifyUserToken,*/ getOrder);
 
