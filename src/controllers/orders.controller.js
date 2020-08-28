@@ -55,7 +55,7 @@ const createOrder = async (req, res) => {
         updatedAt: Date.now(),
         deletedAt: null,
     })
-        .then((order) => console.log(order))
+        .then((order) => res.send(order))
         .catch((err) => err && res.sendStatus(400));
     await User.findByIdAndUpdate(userID, {
         deliveryCity,
