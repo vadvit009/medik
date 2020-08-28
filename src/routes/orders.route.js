@@ -17,7 +17,7 @@ app.get("/order/history", verifyUserToken, userOrderHistory);
 
 app.get("/order/:id", /*verifyUserToken,*/ getOrder);
 
-app.post("/order", verifyUserToken, createOrder);
+app.post("/order", createOrder);
 
 app.patch("/order/:id", verifyUserToken, updateOrder);
 
