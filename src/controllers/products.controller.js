@@ -296,7 +296,10 @@ const getProductByArrayOfIds = (req, res) => {
             $in: productsArrayObjectIds
         }
     })
-        .then(products => res.send(products))
+        .then(products => {
+            console.log('Prod === ',products)
+            res.send(products)
+        })
         .catch(err => {
             console.log("ERROR WHEN GET_PRODUCTS_BY_ID === ", err);
             res.sendStatus(400)
