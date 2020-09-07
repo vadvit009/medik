@@ -288,15 +288,13 @@ const getProductHighScore = (req, res) => {
 const getProductByArrayOfIds = (req, res) => {
     const {productsArray} = req.query;
     const productsArrayObjectIds = (productsArray.length && productsArray.split(",").map(product => product.length && ObjectId(product))) || [];
-    console.log('prods === ', productsArray)
-    console.log('prodsIDS === ', productsArrayObjectIds)
+
     return Product.find({
         _id: {
             $in: productsArrayObjectIds
         }
     })
         .then(products => {
-            console.log('Prod === ', products)
             res.send(products)
         })
         .catch(err => {
