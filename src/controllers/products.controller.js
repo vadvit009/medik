@@ -67,7 +67,6 @@ const getAllProducts = async (req, res) => {
                 res.send({products, length});
             })
     }
-    ;
 
     if (search) {
         Product.aggregate([
@@ -288,16 +287,16 @@ const getProductHighScore = (req, res) => {
 
 const getProductByArrayOfIds = (req, res) => {
     const {productsArray} = req.query;
-    const productsArrayObjectIds = (productsArray.length && productsArray.split(",").map(product => ObjectId(product))) || [];
-    console.log('prods === ',productsArray)
-    console.log('prodsIDS === ',productsArrayObjectIds)
+    const productsArrayObjectIds = (productsArray.length && productsArray.split(",").map(product => product.length && ObjectId(product))) || [];
+    console.log('prods === ', productsArray)
+    console.log('prodsIDS === ', productsArrayObjectIds)
     return Product.find({
         _id: {
             $in: productsArrayObjectIds
         }
     })
         .then(products => {
-            console.log('Prod === ',products)
+            console.log('Prod === ', products)
             res.send(products)
         })
         .catch(err => {
