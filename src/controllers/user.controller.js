@@ -189,7 +189,7 @@ module.exports = {
             httpOnly: true,
         });
 
-        res.redirect("/api/v1/user");
+        res.redirect("/profile");
         // res.send({ token, user });
     },
 
