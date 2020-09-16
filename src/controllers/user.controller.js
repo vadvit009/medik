@@ -13,7 +13,7 @@ module.exports = {
 
     getUser: async (req, res) => {
         const {id} = req.body;
-        console.log(id)
+        console.log(req.body)
         return await User.findById(id)
             .then((user) => {
                 console.log(user)
