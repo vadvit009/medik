@@ -51,7 +51,7 @@ const verifyUserToken = (req, res, next) => {
             console.error("ERROR WITH TOKEN === ", err);
             return res.sendStatus(403)
         };
-        req.body.id = decoded._id;
+        req.body.id = decoded.id;
         next();
     });
 
