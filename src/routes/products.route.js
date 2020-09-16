@@ -15,15 +15,15 @@ const { cache } = require('../cache/cache.util');
 
 const { verifyAdminToken } = require("../middleware/jwtAuth");
 
-app.get("/products", cache(3600), getAllProducts);
+app.get("/products", /*cache(3600),*/ getAllProducts);
 
 app.post("/product", /*verifyAdminToken,*/ createProduct);
 
-app.get("/product/:id", cache(3600), getProduct);
+app.get("/product/:id", /*cache(3600),*/ getProduct);
 
-app.get("/exact", cache(3600), getProductByArrayOfIds);
+app.get("/exact", /*cache(3600),*/ getProductByArrayOfIds);
 
-app.get("/products/highRating", cache(3600), getProductHighScore);
+app.get("/products/highRating",/*cache(3600),*/ getProductHighScore);
 
 app.patch("/product/:id", /*verifyAdminToken,*/ updateProduct);
 

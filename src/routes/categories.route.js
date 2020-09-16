@@ -13,7 +13,7 @@ const { cache } = require('../cache/cache.util');
 
 // app.get("/lookup", getAllCategories);
 
-app.get("/categories", cache(3600), getAllLookupCategoies);
+app.get("/categories", /*cache(3600),*/ getAllLookupCategoies);
 
 app.post("/category", verifyAdminToken, createCategory);
 

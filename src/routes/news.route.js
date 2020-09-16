@@ -13,7 +13,7 @@ const { verifyAdminToken } = require("../middleware/jwtAuth");
 
 const { cache } = require('../cache/cache.util');
 
-app.get("/news", cache(3600), getAllNews);
+app.get("/news",/*cache(3600),*/ getAllNews);
 
 app.get("/new/:id", getNew);
 
