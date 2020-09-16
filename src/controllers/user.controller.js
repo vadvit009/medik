@@ -70,8 +70,9 @@ module.exports = {
     },
 
     logout: async (req, res) => {
-        res.header("authorization", null);
-        res.send("logout");
+        res.clearCookie("token");
+        res.clearCookie("aToken");
+        res.sendStatus(200);
     },
 
     register: async (req, res) => {

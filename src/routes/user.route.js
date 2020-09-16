@@ -33,7 +33,7 @@ app.get("/login/google", passport.authenticate('google', { scope: ['email'] }));
 
 app.get("/google/cb", passport.authenticate('google', { failureRedirect: '/login', session: false }), cbGoogle);
 
-app.post("/logout", logout);
+app.get("/logout", logout);
 
 app.post("/register", register);
 
