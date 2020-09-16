@@ -39,14 +39,12 @@ const verifyUserToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(" ")[1];
     const cookieToken = req.cookies.token;
-    console.log("Cookie token === ", cookieToken);
 
     if (!cookieToken) {
         return res.sendStatus(401);
     }
 
     jwt.verify(cookieToken, process.env.SECRET, (err, decoded) => {
-        console.error("DECODED === ", decoded);
         if (err) {
             console.error("ERROR WITH TOKEN === ", err);
             return res.sendStatus(403)
