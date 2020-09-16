@@ -36,8 +36,9 @@ module.exports = {
                             );
                             res.cookie("aToken", token, {
                                 expires: new Date(Date.now() + 90000000),
-                                httpOnly: true,
+                                // httpOnly: true,
                                 secure: true,
+                                sameSite: true
                             });
                             //TODO user id send with cookie
                             res.json({isAdmin: user.role, aToken: token});
@@ -48,7 +49,8 @@ module.exports = {
                             res.cookie("token", token, {
                                 expires: new Date(Date.now() + 90000000),
                                 secure: true,
-                                httpOnly: true,
+                                sameSite: true
+                                // httpOnly: true,
                             });
                             res.send({user, token});
                         }
