@@ -11,11 +11,11 @@ const {
 
 const { verifyUserToken, verifyAdminToken } = require("../middleware/jwtAuth");
 
-app.get("/orders", /*verifyAdminToken,*/ getAllOrders);
+app.get("/orders", verifyAdminToken, getAllOrders);
 
-app.get("/order/history", /*verifyUserToken,*/ userOrderHistory);
+app.get("/order/history", verifyUserToken, userOrderHistory);
 
-app.get("/order/:id", /*verifyUserToken,*/ getOrder);
+app.get("/order/:id", verifyUserToken, getOrder);
 
 app.post("/order", createOrder);
 
