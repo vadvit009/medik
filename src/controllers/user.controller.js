@@ -107,7 +107,7 @@ module.exports = {
 
     updateUser: async (req, res) => {
         const {
-            id, fName, lName, phone, email, fatherName
+            id, fName, lName, phone, email, fatherName,
             deliveryCity,
             deliveryStreet,
             deliveryHouse,
