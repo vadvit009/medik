@@ -106,7 +106,14 @@ module.exports = {
     },
 
     updateUser: async (req, res) => {
-        const {id, fName, lName, phone, email, fatherName, gallery} = req.body;
+        const {
+            id, fName, lName, phone, email, fatherName
+            deliveryCity,
+            deliveryStreet,
+            deliveryHouse,
+            deliveryApartament,
+            deliveryWarehouse,
+        } = req.body;
         return await User.findByIdAndUpdate(
             id, {
                 fName,
@@ -114,7 +121,11 @@ module.exports = {
                 phone,
                 email,
                 fatherName,
-                gallery,
+                deliveryCity,
+                deliveryStreet,
+                deliveryHouse,
+                deliveryApartament,
+                deliveryWarehouse
             },
             (err, user) => {
                 if (err) return res.sendStatus(400);
