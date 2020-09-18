@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const folderPath = path.resolve(__dirname, "../../build/assets/products/");
-const userFolderPath = path.resolve(__dirname, "../../build/assets/users");
+const userFolderPath = path.resolve(__dirname, "../../build/assets/users/");
 const { User, Product } = require("../models");
 
 const storage = multer.diskStorage({
@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
 
 const userStorage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log("body ====",req.body)
+    console.log(req.params)
     if (!fs.existsSync(userFolderPath + "/" + req.body.id)) {
       fs.mkdirSync(userFolderPath + "/" + req.body.id);
     } else {
