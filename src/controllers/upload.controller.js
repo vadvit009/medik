@@ -89,7 +89,7 @@ module.exports = {
           fs.rmdirSync(userFolderPath + "/" + id, { recursive: true });
           fs.mkdirSync(userFolderPath + "/" + id);
         }
-        cb(null, userFolderPath + "/" + req.body.id);
+        cb(null, userFolderPath + "/" + id);
       },
       filename: function (req, file, cb) {
         cb(null, file.originalname);
