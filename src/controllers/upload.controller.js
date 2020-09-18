@@ -19,13 +19,13 @@ const storage = multer.diskStorage({
 
 const userStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (!fs.existsSync(userFolderPath + "/" + req.params.id)) {
-      fs.mkdirSync(userFolderPath + "/" + req.params.id);
+    if (!fs.existsSync(userFolderPath + "/" + req.body.id)) {
+      fs.mkdirSync(userFolderPath + "/" + req.body.id);
     } else {
-      fs.rmdirSync(userFolderPath + "/" + req.params.id, { recursive: true });
-      fs.mkdirSync(userFolderPath + "/" + req.params.id);
+      fs.rmdirSync(userFolderPath + "/" + req.body.id, { recursive: true });
+      fs.mkdirSync(userFolderPath + "/" + req.body.id);
     }
-    cb(null, userFolderPath + "/" + req.params.id);
+    cb(null, userFolderPath + "/" + req.body.id);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -115,7 +115,6 @@ module.exports = {
           res.sendStatus(400);
           console.log(err);
         });
-      return res.sendStatus(200);
     });
   },
 };
