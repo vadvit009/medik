@@ -17,26 +17,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const userStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    console.log("body ====",req.body)
-    console.log(req.params)
-    if (!fs.existsSync(userFolderPath + "/" + req.body.id)) {
-      fs.mkdirSync(userFolderPath + "/" + req.body.id);
-    } else {
-      fs.rmdirSync(userFolderPath + "/" + req.body.id, { recursive: true });
-      fs.mkdirSync(userFolderPath + "/" + req.body.id);
-    }
-    cb(null, userFolderPath + "/" + req.body.id);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
 const upload = multer({ storage: storage });
-
-const userUpload = multer({ storage: userStorage });
 
 module.exports = {
   mainImgUpload: (req, res) => {
@@ -96,6 +77,24 @@ module.exports = {
   },
 
   userUpload: (req, res) => {
+    const userStorage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        console.log("body ====",req.body)
+        console.log(req.params)
+        if (!fs.existsSync(userFolderPath + "/" + req.body.id)) {
+          fs.mkdirSync(userFolderPath + "/" + req.body.id);
+        } else {
+          fs.rmdirSync(userFolderPath + "/" + req.body.id, { recursive: true });
+          fs.mkdirSync(userFolderPath + "/" + req.body.id);
+        }
+        cb(null, userFolderPath + "/" + req.body.id);
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      },
+    });
+    const userUpload = multer({ storage: userStorage });
+
     console.log("ID === ", req.body.id);
     const { id } = req.body;
     const defaultPath = "https://medtechnika.te.ua/assets/users/";
