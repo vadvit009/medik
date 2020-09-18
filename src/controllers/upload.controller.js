@@ -77,15 +77,17 @@ module.exports = {
   },
 
   userUpload: (req, res) => {
+    const { id } = req.body;
+
     const userStorage = multer.diskStorage({
       destination: function (req, file, cb) {
-        console.log("body ====",req.body)
-        console.log(req.params)
-        if (!fs.existsSync(userFolderPath + "/" + req.body.id)) {
-          fs.mkdirSync(userFolderPath + "/" + req.body.id);
+        console.error("body ====",req.body)
+        console.error(req.params)
+        if (!fs.existsSync(userFolderPath + "/" + id)) {
+          fs.mkdirSync(userFolderPath + "/" + id);
         } else {
-          fs.rmdirSync(userFolderPath + "/" + req.body.id, { recursive: true });
-          fs.mkdirSync(userFolderPath + "/" + req.body.id);
+          fs.rmdirSync(userFolderPath + "/" + id, { recursive: true });
+          fs.mkdirSync(userFolderPath + "/" + id);
         }
         cb(null, userFolderPath + "/" + req.body.id);
       },
@@ -96,7 +98,6 @@ module.exports = {
     const userUpload = multer({ storage: userStorage });
 
     console.log("ID === ", req.body.id);
-    const { id } = req.body;
     const defaultPath = "https://medtechnika.te.ua/assets/users/";
 
     userUpload.single("avatar")(req, res, (err) => {
