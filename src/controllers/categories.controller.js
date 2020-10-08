@@ -17,7 +17,7 @@ const getAllCategories = async (req, res) => {
 };
 
 const getAllLookupCategoies = async (req, res) => {
-  return await Category.aggregate([
+  await Category.aggregate([
     {
       $lookup: {
         from: "category",
