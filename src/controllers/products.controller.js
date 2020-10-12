@@ -113,6 +113,17 @@ const getAllProducts = async (req, res) => {
                 res.sendStatus(400);
             });
     } else {
+        const {length} = await Product.aggregate([
+            {
+                $lookup: {
+                    from: "category",
+                    localField: "categoryID",
+                    foreignField: "_id",
+                    as: "categories"
+                }
+            }
+        ])
+        //
         Product.aggregate([
             {
                 $lookup: {
@@ -127,8 +138,7 @@ const getAllProducts = async (req, res) => {
             .skip(skipNumber())
             .limit(24)
             .then(products => {
-                const productsLength = products.length;
-                res.send({products, length: productsLength});
+                res.send({products, length});
             })
             .catch(err => {
                 console.log(err);

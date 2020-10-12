@@ -71,7 +71,7 @@ const createCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   const { id } = req.params;
-  return await Category.findOneAndDelete(id).exec((err) => {
+  return await Category.findByIdAndDelete(id).exec((err) => {
     if (err) {
       console.log("ERROR WHEN DELETE CATEGORY === ", err);
       return res.sendStatus(400);
