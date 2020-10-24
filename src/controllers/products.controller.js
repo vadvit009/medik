@@ -2,51 +2,51 @@ const {Product} = require("../models");
 const {ObjectId} = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
-    const awaited = await Product.find({});
-    const xz = awaited.forEach(item => {
-        if (item.title.includes('Напівавтоматичний тонометр')) {
-            Product.findByIdAndUpdate(item._id, {
-                categoryID: '5f9460df4163811a4403c66c'
-            }, {new: true})
-                .then(up => {
-                    console.log('UPDATED 50/50 ===', up)
-                }).catch(e => {
-                console.log(e)
-            })
-            //5f9460df4163811a4403c66c
-        } else if (item.title.includes('Автоматичний тонометр')) {
-            Product.findByIdAndUpdate(item._id, {
-                categoryID: '5f9460f04163811a4403c66d'
-            }, {new: true})
-                .then(up => {
-                    console.log('UPDATED AUTO ===', up)
-                }).catch(e => {
-                console.log(e)
-            })
-            //5f9460f04163811a4403c66d
-        } else if (item.title.includes('Механічний тонометр')) {
-            Product.findByIdAndUpdate(item._id, {
-                categoryID: '5f9460b34163811a4403c66b'
-            }, {new: true})
-                .then(up => {
-                    console.log('UPDATED MECHANICAL ===', up)
-                }).catch(e => {
-                console.log(e)
-            })
-            //5f9460b34163811a4403c66b
-        } else if (item.title.includes("Тонометри на зап'ястя")) {
-            Product.findByIdAndUpdate(item._id, {
-                categoryID: '5f94610e4163811a4403c66e'
-            }, {new: true})
-                .then(up => {
-                    console.log("UPDATED зап'ястя ===", up)
-                }).catch(e => {
-                console.log(e)
-            })
-            //5f94610e4163811a4403c66e
-        }
-
-    })
+    // const awaited = await Product.find({});
+    // const xz = awaited.forEach(item => {
+    //     if (item.title.includes('Напівавтоматичний тонометр')) {
+    //         Product.findByIdAndUpdate(item._id, {
+    //             categoryID: '5f9460df4163811a4403c66c'
+    //         }, {new: true})
+    //             .then(up => {
+    //                 console.log('UPDATED 50/50 ===', up)
+    //             }).catch(e => {
+    //             console.log(e)
+    //         })
+    //         //5f9460df4163811a4403c66c
+    //     } else if (item.title.includes('Автоматичний тонометр')) {
+    //         Product.findByIdAndUpdate(item._id, {
+    //             categoryID: '5f9460f04163811a4403c66d'
+    //         }, {new: true})
+    //             .then(up => {
+    //                 console.log('UPDATED AUTO ===', up)
+    //             }).catch(e => {
+    //             console.log(e)
+    //         })
+    //         //5f9460f04163811a4403c66d
+    //     } else if (item.title.includes('Механічний тонометр')) {
+    //         Product.findByIdAndUpdate(item._id, {
+    //             categoryID: '5f9460b34163811a4403c66b'
+    //         }, {new: true})
+    //             .then(up => {
+    //                 console.log('UPDATED MECHANICAL ===', up)
+    //             }).catch(e => {
+    //             console.log(e)
+    //         })
+    //         //5f9460b34163811a4403c66b
+    //     } else if (item.title.includes("Тонометри на зап'ястя")) {
+    //         Product.findByIdAndUpdate(item._id, {
+    //             categoryID: '5f94610e4163811a4403c66e'
+    //         }, {new: true})
+    //             .then(up => {
+    //                 console.log("UPDATED зап'ястя ===", up)
+    //             }).catch(e => {
+    //             console.log(e)
+    //         })
+    //         //5f94610e4163811a4403c66e
+    //     }
+    //
+    // })
 
 
     const {search, page, category, sort} = req.query;
