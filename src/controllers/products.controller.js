@@ -2,52 +2,6 @@ const {Product} = require("../models");
 const {ObjectId} = require("mongoose").Types;
 
 const getAllProducts = async (req, res) => {
-    // const awaited = await Product.find({});
-    // const xz = awaited.forEach(item => {
-    //     if (item.title.includes('Напівавтоматичний тонометр')) {
-    //         Product.findByIdAndUpdate(item._id, {
-    //             categoryID: '5f9460df4163811a4403c66c'
-    //         }, {new: true})
-    //             .then(up => {
-    //                 console.log('UPDATED 50/50 ===', up)
-    //             }).catch(e => {
-    //             console.log(e)
-    //         })
-    //         //5f9460df4163811a4403c66c
-    //     } else if (item.title.includes('Автоматичний тонометр')) {
-    //         Product.findByIdAndUpdate(item._id, {
-    //             categoryID: '5f9460f04163811a4403c66d'
-    //         }, {new: true})
-    //             .then(up => {
-    //                 console.log('UPDATED AUTO ===', up)
-    //             }).catch(e => {
-    //             console.log(e)
-    //         })
-    //         //5f9460f04163811a4403c66d
-    //     } else if (item.title.includes('Механічний тонометр')) {
-    //         Product.findByIdAndUpdate(item._id, {
-    //             categoryID: '5f9460b34163811a4403c66b'
-    //         }, {new: true})
-    //             .then(up => {
-    //                 console.log('UPDATED MECHANICAL ===', up)
-    //             }).catch(e => {
-    //             console.log(e)
-    //         })
-    //         //5f9460b34163811a4403c66b
-    //     } else if (item.title.includes("Тонометри на зап'ястя")) {
-    //         Product.findByIdAndUpdate(item._id, {
-    //             categoryID: '5f94610e4163811a4403c66e'
-    //         }, {new: true})
-    //             .then(up => {
-    //                 console.log("UPDATED зап'ястя ===", up)
-    //             }).catch(e => {
-    //             console.log(e)
-    //         })
-    //         //5f94610e4163811a4403c66e
-    //     }
-    //
-    // })
-
 
     const {search, page, category, sort} = req.query;
     const sortBy = () => {
@@ -102,36 +56,51 @@ const getAllProducts = async (req, res) => {
                     ]
                 }
             }
-        ])
-            .sort(sortBy())
-            .skip(skipNumber())
-            .limit(24)
-            .exec((err, products) => {
-                if (err) {
-                    res.sendStatus(400);
-                    return console.log(err);
-                }
-                res.send({products, length});
-            });
-    } else if (search) {
-        const searchedLenght = Product.aggregate([
-            {
-                $match: {
-                    title: {
-                        $regex: search
+        ]).then(prod => {
+            Product.aggregate([
+                {
+                    $lookup: {
+                        from: "category",
+                        localField: "categoryID",
+                        foreignField: "_id",
+                        as: "categories"
+                    }
+                },
+                {
+                    $match: {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        "categories.parentID": {$in: categoryArrayObjectIds}
+                                    },
+                                    {
+                                        "categories.subParentID": {$in: categoryArrayObjectIds}
+                                    },
+                                    {
+                                        "categories._id": {$in: categoryArrayObjectIds}
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 }
-            },
-            {
-                $lookup: {
-                    from: "category",
-                    localField: "categoryID",
-                    foreignField: "_id",
-                    as: "categories"
-                }
-            }
-        ]).then(prods => console.log(prods.lenght));
-
+            ])
+                .sort(sortBy())
+                .skip(skipNumber())
+                .limit(24)
+                .exec((err, products) => {
+                    if (err) {
+                        res.sendStatus(400);
+                        return console.log(err);
+                    }
+                    res.send({products, length: prod.length});
+                });
+        }).catch(err => {
+            res.sendStatus(400);
+            console.log(err);
+        })
+    } else if (search) {
         Product.aggregate([
             {
                 $match: {
@@ -148,17 +117,41 @@ const getAllProducts = async (req, res) => {
                     as: "categories"
                 }
             }
-        ])
-            .sort(sortBy())
-            .skip(skipNumber())
-            .limit(24)
-            .then(products => {
-                res.send({products, length});
-            })
+        ]).then(prods => {
+
+            Product.aggregate([
+                {
+                    $match: {
+                        title: {
+                            $regex: search
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "category",
+                        localField: "categoryID",
+                        foreignField: "_id",
+                        as: "categories"
+                    }
+                }
+            ])
+                .sort(sortBy())
+                .skip(skipNumber())
+                .limit(24)
+                .then(products => {
+                    res.send({products, length: prods.length});
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.sendStatus(400);
+                });
+        })
             .catch(err => {
                 console.log(err);
                 res.sendStatus(400);
             });
+
     } else {
         const {length} = await Product.aggregate([
             {
