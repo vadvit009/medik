@@ -39,6 +39,7 @@ const getAllLookupCategoies = async (req, res) => {
                 parent: 1,
                 sub: 1,
                 title: 1,
+                gallery: 1
             },
         },
     ]).exec((err, result) => {
