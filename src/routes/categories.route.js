@@ -8,17 +8,17 @@ const {
     patchCategory
 } = require("../controllers/categories.controller");
 
-const { verifyAdminToken } = require('../middleware/jwtAuth');
+const {verifyAdminToken} = require('../middleware/jwtAuth');
 
-const { cache } = require('../cache/cache.util');
+const {cache} = require('../cache/cache.util');
 
 // app.get("/lookup", getAllCategories);
 
 app.get("/categories", /*cache(3600),*/ getAllLookupCategoies);
 
-app.post("/category",/* verifyAdminToken, */createCategory);
+app.post("/category", verifyAdminToken, createCategory);
 
-app.patch("/category/:id",/* verifyAdminToken, */patchCategory);
+app.patch("/category/:id", verifyAdminToken, patchCategory);
 
 app.delete("/category/:id", verifyAdminToken, deleteCategory);
 
