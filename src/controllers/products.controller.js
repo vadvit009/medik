@@ -105,7 +105,8 @@ const getAllProducts = async (req, res) => {
             {
                 $match: {
                     title: {
-                        $regex: search
+                        $regex: search,
+                        $options: "i"
                     }
                 }
             },
@@ -123,7 +124,8 @@ const getAllProducts = async (req, res) => {
                 {
                     $match: {
                         title: {
-                            $regex: search
+                            $regex: search,
+                            $options: "i"
                         }
                     }
                 },
