@@ -139,6 +139,7 @@ module.exports = {
 
     restorePassword: (req, res) => {
         const {email} = req.body;
+        const date = new Date();
         const randomizerPass = `${date.getMilliseconds()}${date.getSeconds()}`
         return User.findOneAndUpdate({email: email}, {password: randomizerPass})
             .then((user) => {
