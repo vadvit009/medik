@@ -137,13 +137,13 @@ module.exports = {
         // .catch((err) => err && res.sendStatus(409));
     },
 
-    restorePassword:  (req, res) => {
+    restorePassword: (req, res) => {
         const {email} = req.body;
         const randomizerPass = `${date.getMilliseconds()}${date.getSeconds()}`
-        return  User.findOneAndUpdate({email: email},{password:randomizerPass})
+        return User.findOneAndUpdate({email: email}, {password: randomizerPass})
             .then((user) => {
                 if (user) {
-                    restorePassword(email,randomizerPass);
+                    restorePassword(email, randomizerPass);
                     // jwt.sign()
                     res.sendStatus(200);
                 } else {
@@ -153,11 +153,19 @@ module.exports = {
             .catch((err) => err && res.sendStatus(409));
     },
 
-    changePassword: async (req, res) => {
-        const {email, password} = req.body;
+    changePassword: (req, res) => {
+        const {email, password, code} = req.body;
         const key = crypto.createHash("md5").update(password).digest("hex");
-        return await User.findOne({email: email}, {password: key})
+        return User.findOne({email: email})
             .then((user) => {
+                user.password === code ?
+                    User.findOneAndUpdate({email: email}, {password: key}).then(changedUser => {
+                        console.log(changedUser)
+                    }).catch(e => {
+                        console.log(e)
+                        res.sendStatus(400)
+                    }) :
+                    res.sendStatus(400)
                 // jwt.verify()
                 res.send("pass changed successfully");
             })
