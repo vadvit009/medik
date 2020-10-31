@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 // async..await is not allowed in global scope, must use a wrapper
-async function restorePassword(email) {
+async function restorePassword(email,code) {
   let transporter = nodemailer.createTransport({
     host: "skm273.hostsila.org",
     port: 465,
@@ -17,8 +17,8 @@ async function restorePassword(email) {
     from: '"Med Technika Ternopil" <support@fastandclever.com>', // sender address
     to: email, // list of receivers
     subject: "Restore password", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    text: code, // plain text body
+    html: "<a href='https://medtechnika.te.ua/restore/code'>Передійть по ссилці для відновлення пароля</a>>", // html body
   });
 
   console.log("Message sent: %s", info.messageId);

@@ -137,12 +137,13 @@ module.exports = {
         // .catch((err) => err && res.sendStatus(409));
     },
 
-    restorePassword: async (req, res) => {
+    restorePassword:  (req, res) => {
         const {email} = req.body;
-        return await User.findOne({email: email})
+        const randomizerPass = `${date.getMilliseconds()}${date.getSeconds()}`
+        return  User.findOneAndUpdate({email: email},{password:randomizerPass})
             .then((user) => {
                 if (user) {
-                    restorePassword(email);
+                    restorePassword(email,randomizerPass);
                     // jwt.sign()
                     res.sendStatus(200);
                 } else {
