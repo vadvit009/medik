@@ -225,7 +225,8 @@ module.exports = {
                 if (user) {
                     function sendMessage(auth) {
                         const gmail = google.gmail({version: 'v1', auth});
-                        const raw = makeBody(email, 'medtechnika.te@gmail.com', 'Відновлення паролю', `<a href="https://medtechnika.te.ua/restore/${randomizerPass}/${email}">Натисніть для відновлення паролю</a>>`);
+                        const raw = makeBody(email, 'medtechnika.te@gmail.com', 'Відновлення паролю',
+                            `<a href="https://medtechnika.te.ua/restore/${randomizerPass}/${email}">Натисніть для відновлення паролю</a>>`);
                         gmail.users.messages.send({
                             auth: auth,
                             userId: 'me',

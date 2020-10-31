@@ -1,5 +1,29 @@
 const {Category} = require("../models");
 
+const path = require('path');
+const fs = require('fs');
+
+const multer = require('multer');
+const folderPath = path.resolve(__dirname, "../../build/assets/category/");
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const { id } = req.params;
+        if (!fs.existsSync(folderPath + "/" + id)) {
+            fs.mkdirSync(folderPath + "/" + id);
+        } else {
+            fs.rmdirSync(folderPath + "/" + id, { recursive: true });
+            fs.mkdirSync(folderPath + "/" + id);
+        }
+        cb(null, folderPath + "/" + id);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage: storage });
+
 const getAllCategories = async (req, res) => {
     return await Category.find()
         .populate({
@@ -106,10 +130,32 @@ const deleteCategory = async (req, res) => {
     });
 };
 
+const uploadPhoto = (req, res) => {
+    const { id } = req.params;
+
+    upload.single('gallery')(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            console.log('ERR WHEN UPLOAD', err);
+            return res.sendStatus(500);
+        } else if (err) {
+            console.log('ERR WHEN UPLOAD', err);
+            return res.sendStatus(500);
+        }
+        const defaultUrl = "https://medtechnika.te.ua/assets/category/";
+        console.log("REQ.FILE === ", req.file);
+        console.log("REQ.FILES === ", req.files);
+        Category.findByIdAndUpdate(id, { gallery: [defaultUrl + id + '/' + req.file.originalname] })
+            .then(() => console.log("Updated successfully"))
+            .catch(err => { console.log("ERROR WHEN UPLOAD NEWS === ", err); res.sendStatus(400) })
+        return res.status(200).send(req.file);
+    });
+}
+
 module.exports = {
     getAllCategories,
     getAllLookupCategoies,
     createCategory,
     deleteCategory,
-    patchCategory
+    patchCategory,
+    uploadPhoto
 };
