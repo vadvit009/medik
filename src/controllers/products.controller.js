@@ -273,7 +273,7 @@ const updateProduct = (req, res) => {
         visibility,
         quantity,
         article,
-        gallery
+        // gallery
     } = req.body;
     return Product.findByIdAndUpdate(id, {
         title,
@@ -288,7 +288,7 @@ const updateProduct = (req, res) => {
         visibility,
         quantity,
         article,
-        gallery,
+        // gallery,
         updatedAt: Date.now(),
         deletedAt: null
     })
